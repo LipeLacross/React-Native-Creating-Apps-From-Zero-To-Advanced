@@ -78,3 +78,12 @@ build.gradle	🟢 Baixa	Atualizar SDK, Kotlin
 settings.gradle	⚪ Rara	Problemas de linking
 
 Se você quer o emulador mais leve, escolha um perfil com resolução menor e densidade (dpi) menor — por exemplo Small Phone ou um perfil genérico de 720×1280. 
+
+react-native-vector-icons
+https://github.com/oblador/react-native-vector-iconsreact-native-vector-icons
+icones
+https://oblador.github.io/react-native-vector-icons/
+
+** Documentação do React Navigation
+
+https://reactnavigation.org/docs/getting-started/

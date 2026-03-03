@@ -49,7 +49,7 @@ export default function HomeScreen({ navigation }: Props) {
     <View style={styles.container}>
       <View style={styles.circle}>
         <Image
-          source={require('../../assets/gas.png')}
+          source={require('../../assets/logo.png')}
           style={styles.circleIcon}
           resizeMode="contain"
         />
@@ -106,8 +106,8 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   circleIcon: {
-    width: 70,
-    height: 70,
+    width: 200,
+    height: 110,
   },
   title: {
     color: '#ffffff',

@@ -61,3 +61,20 @@ Após criar seu projeto lembre-se de acessar a pasta do projeto criado pelo cmd 
 > Usando expo mesmo:
 
 npx expo start
+
+Mobile
+npm run android
+npx react-native run-android
+npx react-native run-android --verbose > build-log.txt     
+ANDROID_HOME
+C:\Users\felip\AppData\Local\Android\Sdk
+
+.\gradlew clean
+ Resumo: Onde Mexer Mais?
+Arquivo	Frequência	Casos Comuns
+app/build.gradle	🔥 Alta	Versões, dependências, signing
+gradle.properties	🟡 Média	Performance, features flags
+build.gradle	🟢 Baixa	Atualizar SDK, Kotlin
+settings.gradle	⚪ Rara	Problemas de linking
+
+Se você quer o emulador mais leve, escolha um perfil com resolução menor e densidade (dpi) menor — por exemplo Small Phone ou um perfil genérico de 720×1280. 

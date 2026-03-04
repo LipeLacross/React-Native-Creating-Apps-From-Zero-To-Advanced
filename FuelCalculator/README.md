@@ -1,97 +1,174 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# ⛽ Fuel Calculator
 
-# Getting Started
+## 🌐 Idiomas
+- **🇧🇷 [Versão em Português](README.md)** ← Você está aqui
+- **🇺🇸 [English Version](README_EN.md)**
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## 📋 Sobre o Projeto
 
-## Step 1: Start Metro
+**Fuel Calculator** é um aplicativo móvel desenvolvido em **React Native** que ajuda o motorista a descobrir qual combustível é mais econômico: álcool ou gasolina. O cálculo é baseado na proporção de preço por litro entre os dois combustíveis.
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+### 🎯 O que a App Faz?
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+O aplicativo compara os preços do álcool e da gasolina para determinar qual oferece o melhor custo-benefício. A regra é simples: se o preço do álcool for **até 70% do preço da gasolina**, vale a pena usar álcool.
 
-```sh
-# Using npm
-npm start
+---
 
-# OR using Yarn
-yarn start
+## 🔨 Funcionalidades
+
+✅ **Cálculo Automático** - Compara preços de álcool vs gasolina  
+✅ **Validação de Entrada** - Valida valores numéricos inseridos  
+✅ **Interface Intuitiva** - Design limpo e responsivo  
+✅ **Navegação Fluida** - Transição entre telas com React Navigation  
+✅ **Suporte Android e iOS** - Funciona em ambas as plataformas  
+✅ **Formatação de Valores** - Exibe preços em formato brasileiro (R$)  
+
+---
+
+## 🏗️ Arquitetura
+
+```
+FuelCalculator/
+├── src/
+│   ├── screens/
+│   │   ├── HomeScreen.tsx      # Tela de entrada de dados
+│   │   └── ResultScreen.tsx    # Tela de resultado
+│   ├── navigation/
+│   │   └── types.ts            # Tipos de navegação
+├── assets/
+│   ├── logo.png                # Logo da aplicação
+│   └── gas.png                 # Ícone de gasolina
+├── App.tsx                     # Componente raiz
+└── package.json                # Dependências do projeto
 ```
 
-## Step 2: Build and run your app
+---
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+## 📱 Telas
 
-### Android
+### 🏠 HomeScreen
+- Campo para inserir preço do **álcool por litro**
+- Campo para inserir preço da **gasolina por litro**
+- Botão "Calcular" para processar os dados
+- Validação de entrada com feedback visual
 
-```sh
-# Using npm
-npm run android
+### 📊 ResultScreen
+- Exibe qual combustível é mais econômico
+- Mostra os valores inseridos formatados
+- Botão para recalcular com novos valores
 
-# OR using Yarn
-yarn android
-```
+---
 
-### iOS
+## 🚀 Como Rodar
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+### Pré-requisitos
+- Node.js >= 22.11.0
+- React Native CLI
+- Android Studio (para Android) ou Xcode (para iOS)
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+### Instalação
 
-```sh
+```bash
+# Clone ou acesse o diretório do projeto
+cd FuelCalculator
+
+# Instale as dependências
+npm install
+
+# Para iOS, instale as dependências nativas
 bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
 bundle exec pod install
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
+### Executar no Android
+```bash
+npm run android
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+### Executar no iOS
+```bash
+npm run ios
+```
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+### Modo Desenvolvimento
+```bash
+npm start
+```
 
-## Step 3: Modify your app
+---
 
-Now that you have successfully run the app, let's make changes!
+## 📦 Dependências Principais
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+| Pacote | Versão | Descrição |
+|--------|--------|-----------|
+| `react` | 19.2.3 | Biblioteca React |
+| `react-native` | 0.84.0 | Framework para mobile |
+| `@react-navigation/native` | ^7.1.28 | Navegação básica |
+| `@react-navigation/native-stack` | ^7.13.0 | Stack Navigator |
+| `typescript` | ^5.8.3 | Tipagem estática |
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+---
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+## 🛠️ Scripts Disponíveis
 
-## Congratulations! :tada:
+```bash
+npm start                # Inicia Metro (dev server)
+npm run android          # Compila e executa no Android
+npm run ios              # Compila e executa no iOS
+npm run lint             # Verifica problemas de código
+npm test                 # Executa testes Jest
+```
 
-You've successfully run and modified your React Native App. :partying_face:
+---
 
-### Now what?
+## 💡 Lógica de Cálculo
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+A aplicação utiliza a seguinte regra de negócio:
 
-# Troubleshooting
+```
+Se (Preço Álcool / Preço Gasolina) ≤ 0.70
+  → Compensa usar Álcool
+Caso contrário
+  → Compensa usar Gasolina
+```
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+**Exemplo:**
+- Álcool: R$ 4,00
+- Gasolina: R$ 6,00
+- Proporção: 4,00 / 6,00 = 0,667 ✅ (≤ 0,70)
+- **Resultado:** Compensa usar Álcool
 
-# Learn More
+---
 
-To learn more about React Native, take a look at the following resources:
+## 🎨 Design
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+- **Tema:** Dark Mode (background escuro #101010)
+- **Cores principais:** Verde (#18d86b) para sucesso, Vermelho (#ff3b30) para ações
+- **Tipografia:** FontWeight 800 para títulos, 700 para conteúdo
+- **Layout:** Centralizado com espaçamento responsivo
+
+---
+
+## ✅ Testes
+
+O projeto inclui testes unitários em Jest. Execute com:
+
+```bash
+npm test
+```
+
+---
+
+## 📄 Licença
+
+Este projeto está sob a licença especificada no arquivo `LICENSE`.
+
+---
+
+## 👨‍💻 Desenvolvimento
+
+Desenvolvido como projeto de aprendizado em **React Native** com **TypeScript**, demonstrando boas práticas em componentização e navegação.
+
+**Versão:** 0.0.1  
+**Última atualização:** 2026-03-03
+

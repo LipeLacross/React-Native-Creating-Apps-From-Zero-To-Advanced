@@ -1,79 +1,160 @@
-# React-Native-Creating-Apps-From-Zero-To-Advanced
-This project was developed based on the React Native course by Professor Matheus Fraga, focusing on creating native apps for Android and iOS. It uses technologies like JavaScript, React Native, and Flexbox. The goal is to create high-performance mobile apps with native-like performance and publish them on app stores.
-https://sujeitoprogramador.com/ambiente-linux/
+## 📱 React Native - Guia Completo do Zero ao Avançado
 
-https://sujeitoprogramador.com/ambiente-linux/
+Este projeto foi desenvolvido baseado no curso de React Native do Professor Matheus Fraga, focado na criação de apps nativos para Android e iOS. Utiliza tecnologias como JavaScript, React Native e Flexbox. O objetivo é criar aplicativos mobile de alta performance com aparência nativa e publicá-los nas lojas de aplicativos.
 
-https://sujeitoprogramador.com/react-native-macos/
+---
 
-https://reactnative.dev/docs/environment-setup
+## 🔧 Guias de Instalação
 
-https://docs.expo.dev/
+### Links Úteis:
+- [Ambiente Linux](https://sujeitoprogramador.com/ambiente-linux/)
+- [Ambiente Linux (alternativo)](https://sujeitoprogramador.com/ambiente-linux/)
+- [React Native no macOS](https://sujeitoprogramador.com/react-native-macos/)
+- [Documentação Oficial React Native](https://reactnative.dev/docs/environment-setup)
+- [Documentação Expo](https://docs.expo.dev/)
 
-Guias de instalação
-- Comando choco:
-
+### Instalação no Windows (com Chocolatey):
+```bash
 choco install -y nodejs-lts microsoft-openjdk17
+```
 
+**⚠️ Atenção na variável ambiente openjdk17:**
+Caso não encontre a pasta onde está instalada, ela também pode estar em:
+```
+C:\Program Files\microsoft\ (Aqui deve estar a pasta do openjdk17)
+```
 
-* Atençao na variável ambiente openjdk17:
+### Configuração do ANDROID_HOME:
+```
+C:\Users\felip\AppData\Local\Android\Sdk
+```
 
-Caso não encontre a pasta onde está instalada ela também pode ficar instalada na pasta:
+---
 
-C:\Program Files\microsoft\ Aqui deve estar a pasta do openjdk17
+## 🚀 Comandos React Native
 
-Comandos React Native
-Comandos React Native
+### Criar Novo Projeto:
 
-
-Vamos lá relembrar, para criarmos um novo aplicativo, abrimos o cmd, navegamos pelo cmd até o local que você quer criar esse novo aplicativo e ai rodamos no cmd:
-
-Comando para criar novo projeto:
-
+```bash
+# Comando padrão
 npx @react-native-community/cli@latest init nomeapp
+
+# Com template específico
 npx react-native init NomeDoProjeto --template <nome-do-template>
+
+# Exemplo com TypeScript
 npx react-native init MeuApp --template react-native-template-typescript
+```
 
-Após acessar a pasta do seu aplicativo no cmd, para rodar o aplicativo:
+### Executar o Projeto:
 
-
-
+**Android:**
+```bash
+# Após acessar a pasta do projeto
 npx react-native run-android
 
+# Com log detalhado
+npx react-native run-android --verbose > build-log.txt
+```
 
-- Se estiver usando um Mac:
-
+**iOS (Mac):**
+```bash
 npx react-native run-ios
-* Lembre-se sempre, antes de usar o comando para rodar o aplicativo precisa estar com o Emulador aberto e ai sim rodar o comando.
-Comando para criar App (expo)
-Comando para criar o App:
-npx create-expo-app nomeapp -t (listar templates)
-* npx create-expo-app nomeapp 
+```
 
-Ali no local onde coloquei nomeapp você coloca o nome do app desejado.
+*💡 Lembre-se: Antes de rodar o comando, o emulador precisa estar aberto!*
 
 
+No diretório do projeto Expo:
 
-E ai na lista de template só selecionar: (SELECIONE a opção Blank)
+bash
+npx expo doctor
+Se usar a expo-cli antiga e receber mensagem de incompatibilidade, tente:
 
-      Default - includes tools recommended for most app developers
->>    Blank 
-​      Blank (TypeScript) 
-      Navigation (TypeScript)
-      Blank (Bare)​
-Após criar seu projeto lembre-se de acessar a pasta do projeto criado pelo cmd e ai para rodar:
+bash
+expo-cli doctor --fix-dependencies
+Se npx expo doctor não resolver, instale/execute o pacote:
 
-> Usando expo mesmo:
+bash
+npx expo-doctor --help
+Para React Native puro:
 
+bash
+npx react-native doctor
+npx react-native doctor --fix
+
+## ⚡ Projetos com Expo
+
+### Criar App com Expo:
+```bash
+# Criar novo projeto
+npx create-expo-app nomeapp
+
+# Listar templates disponíveis
+npx create-expo-app nomeapp -t
+```
+
+Na lista de templates, selecione a opção desejada:
+- Default - includes tools recommended for most app developers
+- **Blank** (recomendado)
+- Blank (TypeScript)
+- Navigation (TypeScript)
+- Blank (Bare)
+
+### Executar App Expo:
+```bash
+# Iniciar o projeto
 npx expo start
 
-Mobile
-npm run android
-npx react-native run-android
-npx react-native run-android --verbose > build-log.txt     
-ANDROID_HOME
-C:\Users\felip\AppData\Local\Android\Sdk
+#pastas nativas
+npx expo prebuild
 
+#
+npx expo prebuild:ios
+npx expo run:android
+
+# Ou via npm
+npm run android
+```
+
+---
+
+## 📱 npm run android vs npm run start
+
+### 1. **`npm run android`** 🏃‍♂️
+```bash
+npm run android
+```
+**O que faz:**
+- Compila o app **E** instala no dispositivo/emulador **E** abre
+- É um atalho para `react-native run-android`
+- Já faz tudo de uma vez: compila + instala + abre
+
+**Quando usar:**
+- Quando você quer testar o app no celular agora
+- Quando fez mudanças e quer ver funcionando
+
+### 2. **`npm run start`** 🚀
+```bash
+npm run start
+```
+**O que faz:**
+- Inicia o Metro Bundler (servidor que empacota o JavaScript)
+- Mostra um QR Code no terminal
+- Fica esperando o app conectar nele
+
+**Quando usar:**
+- Quando você já tem o app instalado no celular e quer desenvolver com recarregamento rápido
+- Você roda isso **uma vez** e deixa rodando enquanto desenvolve
+
+---
+enhuma	npm tenta resolver peerDependencies estritamente	Preferível; força correção de versões
+--legacy-peer-deps	Ignora conflitos de peerDependencies (comportamento antigo)	Quando você precisa instalar rápido e não consegue resolver versões; use temporariamente.
+--force	Força instalação mesmo com conflitos e possíveis quebras	Último recurso; pode instalar versões incompatíveis.
+npm update
+## 🛠️ Comandos Gradle (Build Android)
+
+```bash
 # Só compila (mais rápido para verificar erros)
 .\gradlew.bat assembleDebug
 
@@ -85,21 +166,47 @@ react-native run-android
 
 # Limpa builds anteriores (útil se tiver problemas de cache)
 .\gradlew.bat clean
+📊 Comparação:
+Comando	Usa daemon?	Processo fica rodando?	Próximo build
+.\gradlew.bat clean	✅ Sim	✅ Sim (fica na memória)	Mais rápido
+.\gradlew.bat clean --no-daemon	❌ Não	❌ Não (morre ao terminar)	Mais lento
 
- Resumo: Onde Mexer Mais?
-Arquivo	Frequência	Casos Comuns
-app/build.gradle	🔥 Alta	Versões, dependências, signing
-gradle.properties	🟡 Média	Performance, features flags
-build.gradle	🟢 Baixa	Atualizar SDK, Kotlin
-settings.gradle	⚪ Rara	Problemas de linking
+---
 
-Se você quer o emulador mais leve, escolha um perfil com resolução menor e densidade (dpi) menor — por exemplo Small Phone ou um perfil genérico de 720×1280. 
+## 📁 Onde Mexer Mais? (Arquivos Importantes)
 
-react-native-vector-icons
-https://github.com/oblador/react-native-vector-iconsreact-native-vector-icons
-icones
-https://oblador.github.io/react-native-vector-icons/
+| Arquivo | Frequência | Casos Comuns |
+|---------|------------|--------------|
+| **app/build.gradle** | 🔥 Alta | Versões, dependências, signing |
+| **gradle.properties** | 🟡 Média | Performance, features flags |
+| **build.gradle** | 🟢 Baixa | Atualizar SDK, Kotlin |
+| **settings.gradle** | ⚪ Rara | Problemas de linking |
 
-** Documentação do React Navigation
+---
 
-https://reactnavigation.org/docs/getting-started/
+## 📱 Dicas de Emulador
+
+Se você quer o emulador mais leve, escolha um perfil com **resolução menor e densidade (dpi) menor** — por exemplo **Small Phone** ou um perfil genérico de **720×1280**.
+
+---
+
+## 🎨 Ícones e Navegação
+
+### React Native Vector Icons:
+- [Repositório GitHub](https://github.com/oblador/react-native-vector-icons)
+- [Biblioteca de Ícones](https://oblador.github.io/react-native-vector-icons/)
+
+### React Navigation:
+- [Documentação Oficial](https://reactnavigation.org/docs/getting-started/)
+
+---
+
+## ✅ Resumo do Fluxo de Trabalho
+
+1. **Instalar ambiente** (Node.js, JDK, Android Studio)
+2. **Criar projeto** (`npx react-native init MeuApp`)
+3. **Abrir emulador** (Android Studio)
+4. **Executar app** (`npm run android` ou `npx react-native run-android`)
+5. **Desenvolver** com recarregamento rápido
+6. **Gerar APK** (`.\gradlew.bat assembleDebug`)
+

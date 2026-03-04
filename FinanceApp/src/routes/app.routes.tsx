@@ -1,5 +1,5 @@
 import React from 'react';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import { createDrawerNavigator, DrawerContentComponentProps } from '@react-navigation/drawer';
 
 import Home from '../pages/Home';
 import New from '../pages/New';
@@ -9,10 +9,13 @@ import CustomDrawer from '../components/CustomDrawer';
 
 const AppDrawer = createDrawerNavigator();
 
+// Componente de drawer extraído para evitar re-criação
+const DrawerContent = (props: DrawerContentComponentProps) => <CustomDrawer {...props} />;
+
 function AppRoutes(){
   return(
     <AppDrawer.Navigator
-      drawerContent={ (props) => <CustomDrawer {...props} /> }
+      drawerContent={DrawerContent}
       screenOptions={{
         headerShown:false,
 

@@ -26,8 +26,8 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins":
-            notifee react native
-    expo build properties
+    "plugins": [
+      "@notifee/react-native"
+    ]
   }
 }

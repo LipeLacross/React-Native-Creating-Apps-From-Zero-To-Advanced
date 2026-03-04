@@ -31,6 +31,9 @@ Vamos lá relembrar, para criarmos um novo aplicativo, abrimos o cmd, navegamos 
 Comando para criar novo projeto:
 
 npx @react-native-community/cli@latest init nomeapp
+npx react-native init NomeDoProjeto --template <nome-do-template>
+npx react-native init MeuApp --template react-native-template-typescript
+
 Após acessar a pasta do seu aplicativo no cmd, para rodar o aplicativo:
 
 
@@ -44,7 +47,9 @@ npx react-native run-ios
 * Lembre-se sempre, antes de usar o comando para rodar o aplicativo precisa estar com o Emulador aberto e ai sim rodar o comando.
 Comando para criar App (expo)
 Comando para criar o App:
-npx create-expo-app nomeapp -t
+npx create-expo-app nomeapp -t (listar templates)
+* npx create-expo-app nomeapp 
+
 Ali no local onde coloquei nomeapp você coloca o nome do app desejado.
 
 

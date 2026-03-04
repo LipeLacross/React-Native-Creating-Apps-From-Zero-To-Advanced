@@ -1,97 +1,127 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# 🛒 ShoppingCarts
 
-# Getting Started
+🌐🇧🇷 [Versão em Português do README](README.md)  
+🌐🇺🇸 [English Version of README](README_EN.md)
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+Aplicativo de carrinho de compras desenvolvido em React Native com TypeScript, permitindo adicionar, remover e gerenciar itens de compra de forma simples e intuitiva.
 
-## Step 1: Start Metro
+## 🔨 Funcionalidades do Projeto
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+- **Listagem de Produtos**: Exibição de produtos disponíveis para compra
+- **Adicionar ao Carrinho**: Adicionar itens à lista de compras com um clique
+- **Gerenciar Quantidade**: Aumentar ou diminuir a quantidade de itens no carrinho
+- **Remover Itens**: Deletar produtos do carrinho
+- **Cálculo de Total**: Cálculo automático do valor total da compra
+- **Contador de Itens**: Badge mostrando a quantidade de itens no carrinho
+- **Navegação**: Navegação fluida entre telas de Home e Carrinho
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+## ✔️ Técnicas e Tecnologias Utilizadas
 
-```sh
-# Using npm
+- **React Native 0.83.2**: Framework para desenvolvimento mobile multiplataforma
+- **Expo**: Plataforma para desenvolvimento rápido em React Native
+- **TypeScript**: Tipagem estática para maior segurança e produtividade
+- **React Navigation**: Sistema de navegação entre telas
+- **Context API**: Gerenciamento de estado global do carrinho
+- **Expo Vector Icons**: Ícones profissionais
+
+## 📁 Estrutura do Projeto
+
+```
+src/
+├── components/           # Componentes reutilizáveis
+│   ├── CardItem/        # Item do carrinho
+│   └── Product/         # Produto da lista
+├── contexts/            # Contextos do React (CartContext)
+├── pages/               # Telas da aplicação
+│   ├── Home/            # Listagem de produtos
+│   └── Cart/            # Carrinho de compras
+└── routes/              # Configuração de rotas
+```
+
+## 🛠️ Instalação e Execução
+
+### Pré-requisitos
+
+- Node.js >= 18
+- npm ou yarn
+- Expo CLI instalado globalmente
+
+### Passos de Instalação
+
+1. Clone ou navegue até o diretório do projeto
+2. Instale as dependências:
+```bash
+npm install
+```
+
+3. Inicie o aplicativo:
+```bash
 npm start
-
-# OR using Yarn
-yarn start
 ```
 
-## Step 2: Build and run your app
+4. Escolha a plataforma para executar:
+   - **Android**: Pressione `a` no terminal ou execute `npm run android`
+   - **iOS**: Pressione `i` no terminal ou execute `npm run ios` (Mac apenas)
+   - **Web**: Pressione `w` no terminal ou execute `npm run web`
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+## 📱 Telas do Aplicativo
 
-### Android
+### Home
+- Exibe a lista de produtos disponíveis
+- Botão para adicionar itens ao carrinho
+- Badge mostra a quantidade de itens no carrinho
+- Botão de navegação para o carrinho
 
-```sh
-# Using npm
-npm run android
+### Cart
+- Mostra todos os itens adicionados ao carrinho
+- Permite aumentar ou diminuir a quantidade de cada item
+- Exibe o preço total da compra
+- Mensagem quando o carrinho está vazio
 
-# OR using Yarn
-yarn android
+## 💾 Estrutura de Dados
+
+### CartItem
+```typescript
+type CartItem = {
+  id: string;
+  name: string;
+  price: number;
+  amount: number;
+  total: number;
+}
 ```
 
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
+### CartContextType
+```typescript
+type CartContextType = {
+  cart: CartItem[];
+  addItemCart: (newItem: Omit<CartItem, 'amount' | 'total'>) => void;
+  removeItemCart: (product: CartItem) => void;
+  total: string;
+}
 ```
 
-Then, and every time you update your native dependencies, run:
+## 🚀 Scripts Disponíveis
 
-```sh
-bundle exec pod install
-```
+- `npm start` - Inicia o Expo e permite escolher a plataforma
+- `npm run android` - Executa no Android
+- `npm run ios` - Executa no iOS (Mac apenas)
+- `npm run web` - Executa na web
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+## 📝 Conversão TypeScript
 
-```sh
-# Using npm
-npm run ios
+O projeto foi completamente convertido de JavaScript para TypeScript:
+- ✅ Todos os componentes tipados
+- ✅ Context com tipos explícitos
+- ✅ Rotas com RootStackParamList
+- ✅ Props com tipagem completa
+- ✅ Estado com tipos genéricos
 
-# OR using Yarn
-yarn ios
-```
+## 📄 Licença
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+Este projeto é open source e está disponível para uso educacional.
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+## 👨‍💻 Autor
 
-## Step 3: Modify your app
+Desenvolvido como projeto de estudo em React Native e TypeScript.
 
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View, ActivityIndicator, StyleSheet } from 'react-native';
 
 import { AuthContext } from '../contexts/auth'
 
@@ -11,13 +11,7 @@ function Routes(){
 
   if(loading){
     return(
-      <View 
-      style={{
-        flex:1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F0F4FF'
-      }}>
+      <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#131313" />
       </View>
     )
@@ -27,5 +21,14 @@ function Routes(){
     signed ? <AppRoutes/> : <AuthRoutes/>
   )
 }
+
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F0F4FF'
+  }
+});
 
 export default Routes;

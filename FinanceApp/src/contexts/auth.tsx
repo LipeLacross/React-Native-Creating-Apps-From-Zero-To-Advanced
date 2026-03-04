@@ -1,18 +1,43 @@
 import React, { createContext, useState, useEffect } from 'react';
 
 import api from '../services/api';
-import { useNavigation } from '@react-navigation/native';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const AuthContext = createContext({});
+type User = {
+  id: string;
+  name: string;
+  email: string;
+};
 
-function AuthProvider({ children }){
-  const [user, setUser] = useState(null); 
+type AuthContextData = {
+  signed: boolean;
+  user: User | null;
+  loadingAuth: boolean;
+  loading: boolean;
+  signUp: (email: string, password: string, nome: string) => Promise<boolean>;
+  signIn: (email: string, password: string) => Promise<void>;
+  signOut: () => Promise<void>;
+};
+
+type AuthProviderProps = {
+  children: React.ReactNode;
+};
+
+export const AuthContext = createContext<AuthContextData>({
+  signed: false,
+  user: null,
+  loadingAuth: false,
+  loading: true,
+  signUp: async () => false,
+  signIn: async () => {},
+  signOut: async () => {},
+});
+
+function AuthProvider({ children }: AuthProviderProps){
+  const [user, setUser] = useState<User | null>(null);
   const [loadingAuth, setLoadingAuth] = useState(false);
   const [loading, setLoading] = useState(true);
-
-  const navigation = useNavigation();
 
 
   useEffect(() => {
@@ -23,48 +48,45 @@ function AuthProvider({ children }){
 
         const response = await api.get('/me', {
           headers:{
-            'Authorization': `Bearer ${storageUser}`
+            Authorization: `Bearer ${storageUser}`
           }
         })
         .catch(()=>{
           setUser(null);
-        })
+          return null;
+        });
 
-        api.defaults.headers['Authorization'] = `Bearer ${storageUser}`;
-        setUser(response.data);
-        setLoading(false);
-
+        api.defaults.headers.Authorization = `Bearer ${storageUser}`;
+        setUser(response?.data ?? null);
       }
 
       setLoading(false);
-
     }
 
     loadStorage();
   }, [])
 
 
-  async function signUp(email, password, nome){
+  async function signUp(email: string, password: string, nome: string){
     setLoadingAuth(true);
 
     try{
-      const response = await api.post('/users', {
+      await api.post('/users', {
        name: nome,
        password: password,
        email: email,
       })
+
       setLoadingAuth(false);
-
-      navigation.goBack();
-
-
+      return true;
     }catch(err){
       console.log("ERRO AO CADASTRAR", err);
       setLoadingAuth(false);
+      return false;
     }
   }
 
-  async function signIn(email, password){
+  async function signIn(email: string, password: string){
     setLoadingAuth(true);
 
     try{
@@ -75,16 +97,9 @@ function AuthProvider({ children }){
 
       const { id, name, token } = response.data;
 
-      const data = {
-        id,
-        name,
-        token,
-        email,
-      };
-
       await AsyncStorage.setItem('@finToken', token);
 
-      api.defaults.headers['Authorization'] = `Bearer ${token}`;
+      api.defaults.headers.Authorization = `Bearer ${token}`;
 
       setUser({
         id,
@@ -117,4 +132,3 @@ function AuthProvider({ children }){
 }
 
 export default AuthProvider;
-

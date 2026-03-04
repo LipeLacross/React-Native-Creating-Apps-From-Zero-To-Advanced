@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Platform, ActivityIndicator } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import { 
   Background, 
@@ -12,19 +13,21 @@ import {
 
 import { AuthContext } from '../../contexts/auth';
 
-
 export default function SignUp(){
-
-  const { signUp, loadingAuth } = useContext(AuthContext)
+  const { signUp, loadingAuth } = useContext(AuthContext);
+  const navigation = useNavigation();
 
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  function handleSignUp(){
+  async function handleSignUp(){
     if(nome === '' || email === '' || password === '') return;
 
-    signUp(email, password, nome);
+    const created = await signUp(email, password, nome);
+    if(created){
+      navigation.goBack();
+    }
   }
 
   return(
@@ -38,7 +41,7 @@ export default function SignUp(){
           <Input
             placeholder="Nome"
             value={nome}
-            onChangeText={ (text) => setNome(text) }
+            onChangeText={ (text: string) => setNome(text) }
           />
         </AreaInput>
 
@@ -46,7 +49,7 @@ export default function SignUp(){
           <Input
             placeholder="Seu email"
             value={email}
-            onChangeText={ (text) => setEmail(text) }
+            onChangeText={ (text: string) => setEmail(text) }
           />
         </AreaInput>
 
@@ -54,7 +57,7 @@ export default function SignUp(){
           <Input
             placeholder="Sua senha"
             value={password}
-            onChangeText={ (text) => setPassword(text) }
+            onChangeText={ (text: string) => setPassword(text) }
             secureTextEntry={true}
           />
         </AreaInput>

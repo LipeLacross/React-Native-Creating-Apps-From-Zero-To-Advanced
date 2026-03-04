@@ -3,10 +3,15 @@ import Feather from 'react-native-vector-icons/Feather';
 
 import { RegisterContainer, RegisterTypeButton, RegisterLabel } from './styles';
 
-export default function RegisterTypes({ type, sendTypeChanged }){
+type RegisterTypesProps = {
+  type: string;
+  sendTypeChanged: (type: string) => void;
+}
+
+export default function RegisterTypes({ type, sendTypeChanged }: RegisterTypesProps){
   const [typeChecked, setTypeChecked] = useState(type)
 
-  function changeType(name){
+  function changeType(name: string){
     if(name === 'receita'){
       setTypeChecked('receita');
       sendTypeChanged('receita');

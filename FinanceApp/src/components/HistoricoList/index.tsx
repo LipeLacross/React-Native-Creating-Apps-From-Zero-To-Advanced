@@ -10,8 +10,20 @@ import { TouchableWithoutFeedback, Alert} from 'react-native';
 
 import Icon from 'react-native-vector-icons/Feather';
 
+type MovementData = {
+  id: string;
+  type: string;
+  value: string;
+  description?: string;
+  date?: string;
+}
 
-export default function HistoricoList({ data, deleteItem }){
+type HistoricoListProps = {
+  data: MovementData;
+  deleteItem: (id: string) => void;
+}
+
+export default function HistoricoList({ data, deleteItem }: HistoricoListProps){
 
   function handleDeleteItem(){
     Alert.alert(

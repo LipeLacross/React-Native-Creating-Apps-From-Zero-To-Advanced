@@ -1,28 +1,32 @@
 import React, { useState } from 'react';
-import { TouchableWithoutFeedback, View } from 'react-native';
-import { 
+import { TouchableWithoutFeedback, View, StyleSheet } from 'react-native';
+import {
   Container, 
   ButtonFilterText,
   ModalContent,
   ButtonFilter
  } from './styles';
 
-import { Calendar, LocaleConfig } from 'react-native-calendars';
+import { Calendar, LocaleConfig, DateData } from 'react-native-calendars';
 import { ptBR } from './localeCalendar';
 
 LocaleConfig.locales['pt-br'] = ptBR;
 LocaleConfig.defaultLocale = 'pt-br';
 
+type CalendarModalProps = {
+  setVisible: () => void;
+  handleFilter: (date: Date) => void;
+}
 
-export default function CalendarModal({ setVisible, handleFilter }){
+export default function CalendarModal({ setVisible, handleFilter }: CalendarModalProps){
   const [dateNow, setDateNow] = useState(new Date())
   const [markeddates, setMarkedDates] = useState({});
 
-  function handleOnDayPress(date){
+  function handleOnDayPress(date: DateData){
     //console.log(date.dateString);
     setDateNow(new Date(date.dateString));
 
-    let markedDay = {};
+    let markedDay: any = {};
 
     markedDay[date.dateString] = {
       selected: true,
@@ -44,7 +48,7 @@ export default function CalendarModal({ setVisible, handleFilter }){
   return(
     <Container>
       <TouchableWithoutFeedback onPress={setVisible}>
-        <View style={{ flex:1 }}></View>
+        <View style={styles.emptyView} />
       </TouchableWithoutFeedback>
 
       <ModalContent>
@@ -68,3 +72,9 @@ export default function CalendarModal({ setVisible, handleFilter }){
     </Container>
   )
 }
+
+const styles = StyleSheet.create({
+  emptyView: {
+    flex: 1
+  }
+});

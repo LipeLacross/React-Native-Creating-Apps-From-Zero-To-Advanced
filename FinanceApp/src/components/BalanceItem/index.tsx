@@ -1,7 +1,16 @@
 import React, { useMemo } from 'react';
 import { Container, Label, Balance } from './styles';
 
-export default function BalanceItem({ data }){
+type BalanceData = {
+  tag: string;
+  saldo: string;
+}
+
+type BalanceItemProps = {
+  data: BalanceData;
+}
+
+export default function BalanceItem({ data }: BalanceItemProps){
 
   const labelName = useMemo(() => {
     if(data.tag === 'saldo'){

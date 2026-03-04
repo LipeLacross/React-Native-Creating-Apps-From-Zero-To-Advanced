@@ -5,7 +5,11 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Container, Title, ButtonMenu} from './styles';
 
-export default function Header({ title }){
+type HeaderProps = {
+  title?: string;
+}
+
+export default function Header({ title }: HeaderProps){
   const navigation = useNavigation();
 
   return(

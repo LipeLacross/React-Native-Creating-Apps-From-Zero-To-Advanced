@@ -69,7 +69,18 @@ npx react-native run-android --verbose > build-log.txt
 ANDROID_HOME
 C:\Users\felip\AppData\Local\Android\Sdk
 
-.\gradlew clean
+# Só compila (mais rápido para verificar erros)
+.\gradlew.bat assembleDebug
+
+# Compila e instala (mas não abre)
+.\gradlew.bat installDebug
+
+# Compila, instala e abre (igual ao run-android)
+react-native run-android
+
+# Limpa builds anteriores (útil se tiver problemas de cache)
+.\gradlew.bat clean
+
  Resumo: Onde Mexer Mais?
 Arquivo	Frequência	Casos Comuns
 app/build.gradle	🔥 Alta	Versões, dependências, signing

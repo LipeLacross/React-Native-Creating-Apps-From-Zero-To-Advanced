@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import { Background, Input, SubmitButton, SubmitText } from './styles';
-import { SafeAreaView, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
+import { SafeAreaView, TouchableWithoutFeedback, Keyboard, Alert, StyleSheet } from 'react-native';
 
 import Header from '../../components/Header'
 import RegisterTypes from '../../components/RegisterTypes';
@@ -21,7 +21,7 @@ export default function New(){
     Keyboard.dismiss();
 
     if(isNaN(parseFloat(valueInput)) || type === null){
-      alert('Preencha todos os campos')
+      Alert.alert('Atenção', 'Preencha todos os campos')
       return;
     }
 
@@ -63,7 +63,7 @@ export default function New(){
       <Background>
         <Header title="Registrando" />
 
-        <SafeAreaView style={{marginTop: 14, alignItems: 'center' }}>
+        <SafeAreaView style={styles.container}>
           <Input
             placeholder="Descrição desse registro"
             value={labelInput}
@@ -88,3 +88,10 @@ export default function New(){
     </TouchableWithoutFeedback>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 14,
+    alignItems: 'center'
+  }
+});

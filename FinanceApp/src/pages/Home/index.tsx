@@ -1,7 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { TouchableOpacity, Modal } from 'react-native';
-
-import { AuthContext } from '../../contexts/auth'
+import React, { useEffect, useState } from 'react';
+import { TouchableOpacity, Modal, StyleSheet } from 'react-native';
 
 import Header from '../../components/Header';
 import { 
@@ -22,11 +20,23 @@ import CalendarModal from '../../components/CalendarModal'
 
 import Icon from 'react-native-vector-icons/MaterialIcons'
 
+type BalanceData = {
+  tag: string;
+  saldo: string;
+}
+
+type MovementData = {
+  id: string;
+  type: string;
+  value: string;
+  description?: string;
+  date?: string;
+}
 
 export default function Home(){
   const isFocused = useIsFocused();
-  const [listBalance, setListBalance] = useState([]);
-  const [movements, setMovements] = useState([]);
+  const [listBalance, setListBalance] = useState<BalanceData[]>([]);
+  const [movements, setMovements] = useState<MovementData[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
 
   const [dateMovements, setDateMovements] = useState(new Date())
@@ -61,12 +71,14 @@ export default function Home(){
 
     getMovements();
 
-    return () => isActive = false;
+    return () => {
+      isActive = false;
+    };
 
   }, [isFocused, dateMovements])
 
 
-  async function handleDelete(id){
+  async function handleDelete(id: string){
     try{
       await api.delete('/receives/delete', {
         params:{
@@ -80,7 +92,7 @@ export default function Home(){
     }
   }
 
-  function filterDateMovements(dateSelected){
+  function filterDateMovements(dateSelected: Date){
     // console.log(dateSelected);
     setDateMovements(dateSelected);
   }
@@ -94,8 +106,8 @@ export default function Home(){
         data={listBalance}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        keyExtractor={ item => item.tag }
-        renderItem={ ({ item }) => ( <BalanceItem data={item} /> )}
+        keyExtractor={ (item: BalanceData) => item.tag }
+        renderItem={ ({ item }: { item: BalanceData }) => ( <BalanceItem data={item} /> )}
       />
 
       <Area>
@@ -107,10 +119,10 @@ export default function Home(){
 
       <List
         data={movements}
-        keyExtractor={ item => item.id }
-        renderItem={ ({ item }) => <HistoricoList data={item} deleteItem={handleDelete} />  }
+        keyExtractor={ (item: MovementData) => item.id }
+        renderItem={ ({ item }: { item: MovementData }) => <HistoricoList data={item} deleteItem={handleDelete} />  }
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 20 }}
+        contentContainerStyle={styles.listContent}
       />
 
       <Modal visible={modalVisible} animationType="fade" transparent={true}>
@@ -124,3 +136,10 @@ export default function Home(){
     </Background>
   )
 }
+
+const styles = StyleSheet.create({
+  listContent: {
+    paddingBottom: 20
+  }
+});
+

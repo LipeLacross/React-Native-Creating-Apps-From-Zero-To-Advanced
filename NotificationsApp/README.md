@@ -3,281 +3,117 @@
 🌐🇧🇷 [Versão em Português do README](README.md) ← Você está aqui  
 🌐🇺🇸 [English Version of README](README_EN.md)
 
-Aplicativo de demonstração de notificações desenvolvido em **Expo** com **React Native** e **TypeScript**, utilizando a biblioteca **expo-notifications** para gerenciar notificações em tempo real e agendadas.
+Aplicativo de demonstração de notificações com **Expo**, **React Native** e **TypeScript**, usando **expo-notifications** para envio imediato e agendamento local.
 
-## 🔨 Funcionalidades do Projeto
+## 🔨 Funcionalidades
 
-✅ **Notificações em Tempo Real** - Exibir notificações imediatas  
-✅ **Notificações Agendadas** - Agendar notificações para horários específicos  
-✅ **Notificações Recorrentes** - Agendar notificações que se repetem semanalmente  
-✅ **Manipulação de Eventos** - Detectar quando usuário interage com notificação  
-✅ **Listagem de Notificações** - Visualizar IDs das notificações agendadas  
-✅ **Cancelamento de Notificações** - Remover notificações específicas  
-✅ **Permissões** - Solicitar e validar permissões do sistema  
+- Notificação imediata
+- Notificação agendada (1 minuto)
+- Notificação recorrente semanal
+- Listener de recebimento em foreground
+- Listener de resposta ao toque na notificação
+- Listagem de IDs agendados (estado local)
+- Cancelamento da última notificação agendada
 
-## ✔️ Tecnologias Utilizadas
+## ✔️ Tecnologias
 
-- **Expo ~55.0.4**: Plataforma para desenvolvimento React Native
-- **React Native 0.83.2**: Framework mobile multiplataforma
-- **TypeScript ~5.9.2**: Tipagem estática para maior segurança
-- **expo-notifications ~0.28.6**: Biblioteca nativa Expo para gerenciar notificações
-- **React 19.2.0**: Biblioteca UI
-- **Expo Status Bar ~55.0.4**: Barra de status personalizável
+- Expo `~55.0.4`
+- React Native `0.83.2`
+- React `19.2.0`
+- TypeScript `~5.9.2`
+- expo-notifications `~55.0.10`
+- expo-constants `~55.0.7`
 
-## 📁 Estrutura do Projeto
+## 📁 Estrutura
 
-```
+```text
 NotificationsApp/
-├── App.tsx                 # Componente principal
-├── index.ts                # Entry point
-├── app.json                # Configuração Expo
-├── package.json            # Dependências
-├── tsconfig.json           # Configuração TypeScript
-└── assets/                 # Imagens e ícones
-    ├── icon.png
-    ├── splash-icon.png
-    ├── favicon.png
-    ├── android-icon-*.png
-    └── android-icon-monochrome.png
-```
-
-## 🛠️ Instalação e Execução
-
-### ⚠️ Importante!
-
-Este projeto usa `expo-notifications` que requer **módulos nativos**. Portanto, **não funciona** no Expo Go padrão. Você precisa de um **Development Build**.
-
-### Pré-requisitos
-
-- Node.js >= 18
-- npm ou yarn
-- Conta Expo (grátis): https://expo.dev
-- EAS CLI: `npm install -g eas-cli`
-- Android Studio Emulator (ou dispositivo Android real)
-
-### Passos de Instalação Rápida
-
-1. **Fazer Login na Expo:**
-```bash
-eas login
-```
-
-2. **Instalar Dependências:**
-```bash
-cd NotificationsApp
-npm install
-```
-
-3. **Criar Development Build:**
-```bash
-eas build --platform android --profile preview3
-```
-
-4. **Instalar e Testar:**
-```bash
-npm start
-```
-
-Escaneie o QR code com o app que foi instalado.
-
-### Alternativa: Testar Localmente
-```bash
-npx expo start --dev-client
-```
-(Requer Android Studio Emulator)
-
-## 📱 Como Usar a Aplicação
-
-### Enviar Notificação
-1. Toque no botão **"ENVIAR NOTIFICAÇÃO"**
-2. A notificação aparecerá imediatamente na barra de notificação
-
-### Agendar Notificação
-1. Toque no botão **"AGENDAR NOTIFICAÇÃO"**
-2. Uma notificação será agendada para 1 minuto à frente
-3. O ID da notificação será exibido no console
-
-### Agendar Notificação Semanal (Recorrente)
-1. Toque no botão **"AGENDAR SEMANAL"**
-2. Uma notificação será agendada para se repetir a cada 7 dias
-3. O ID da notificação será exibido no console
-4. A notificação aparecerá automaticamente todas as semanas no mesmo horário
-
-### Listar Notificações Agendadas
-1. Toque no botão **"LISTAR NOTIFICAÇÕES"**
-2. Os IDs das notificações ativas aparecerão no console
-
-### Cancelar Notificação
-1. Toque no botão **"CANCELAR NOTIFICAÇÃO"**
-2. A última notificação agendada será removida do sistema
-
-## 🎯 Funcionalidades Detalhadas
-
-### Permissões
-O app solicita permissão ao iniciar:
-- Verifica se o usuário autorizou notificações
-- Define `statusNotification` como `true` se autorizado
-- Exibe mensagem se o usuário negou
-
-### Notificações em Foreground
-Quando o app está aberto e recebe uma notificação, ela é exibida automaticamente com som e vibração.
-
-### Notificações em Background
-O app detecta quando o usuário toca em uma notificação enquanto o app está minimizado.
-
-### Agendamento
-- **Imediato**: `trigger: null`
-- **Específico**: `trigger: { seconds: 60 }` (1 minuto)
-- **Recorrente**: `trigger: { seconds: 604800, repeats: true }` (7 dias)
-
-## 🧪 Testes
-
-Para testar as notificações:
-
-1. Coloque o app em background (pressione home)
-2. Envie uma notificação
-3. Verifique se aparece na barra de notificação
-4. Toque para abrir e confirme a interação
-
-## 📝 Notas Importantes
-
-⚠️ **Permissões Android**: Notificações requerem `android.permission.POST_NOTIFICATIONS`  
-⚠️ **iOS**: Requer configuração de certificados push  
-⚠️ **Expo Go**: Usa expo-notifications que é totalmente compatível  
-⚠️ **Recorrência**: O Expo suporta recorrência com o parâmetro `repeats: true`
-
-## 📄 Licença
-
-Este projeto é open source e está disponível para uso educacional.
-
-## 👨‍💻 Autor
-
-Desenvolvido como projeto de estudo em React Native com Expo Notifications.
-
-
-## 📁 Estrutura do Projeto
-
-```
-NotificationsApp/
-├── App.tsx                 # Componente principal
-├── index.ts                # Entry point
-├── app.json                # Configuração Expo
-├── package.json            # Dependências
-├── tsconfig.json           # Configuração TypeScript
-└── assets/                 # Imagens e ícones
-    ├── icon.png
-    ├── splash-icon.png
-    ├── favicon.png
-    ├── android-icon-*.png
-    └── android-icon-monochrome.png
+├── App.tsx
+├── index.ts
+├── app.json
+├── package.json
+├── tsconfig.json
+└── android/ (gerado via prebuild)
 ```
 
 ## 🛠️ Instalação e Execução
 
 ### Pré-requisitos
 
-- Node.js >= 18
-- npm ou yarn
-- Expo CLI: `npm install -g expo-cli`
+- Node.js 18+
+- Android Studio (emulador) ou dispositivo Android
 
-### Passos de Instalação
+### Rodar local com build nativa (recomendado)
 
-1. Navegue até a pasta do projeto:
 ```bash
 cd NotificationsApp
-```
-
-2. Instale as dependências:
-```bash
 npm install
+npx expo prebuild --platform android
+npx expo run:android
 ```
 
-3. Inicie o servidor Expo:
+### Rodar somente bundler
+
 ```bash
+cd NotificationsApp
 npm start
 ```
 
-4. Execute em diferentes plataformas:
+## 📱 Como usar
 
-**Android:**
-```bash
-npm run android
-```
+- **ENVIAR NOTIFICAÇÃO**: envia imediatamente (`trigger: null`)
+- **AGENDAR NOTIFICAÇÃO**: agenda para 60 segundos
+- **AGENDAR SEMANAL**: agenda recorrência a cada 7 dias
+- **LISTAR NOTIFICAÇÕES**: mostra IDs mantidos no estado local
+- **CANCELAR NOTIFICAÇÃO**: cancela a última notificação da lista local
 
-**iOS:**
-```bash
-npm run ios
-```
-
-**Web:**
-```bash
-npm run web
-```
-
-## 📱 Como Usar a Aplicação
-
-### Enviar Notificação
-1. Toque no botão **"Enviar notificação"**
-2. A notificação aparecerá imediatamente na barra de notificação
-
-### Agendar Notificação
-1. Toque no botão **"Agendar notificaçao"**
-2. Uma notificação será agendada para 1 minuto à frente
-3. O ID da notificação será exibido no console
-
-### Agendar Notificação Semanal (Recorrente)
-1. Toque no botão **"Agendar Semanal"**
-2. Uma notificação será agendada para se repetir a cada 7 dias
-3. O ID da notificação será exibido no console
-4. A notificação aparecerá automaticamente todas as semanas no mesmo horário
-
-### Listar Notificações Agendadas
-1. Toque no botão **"Listar notificacoes"**
-2. Os IDs das notificações ativas aparecerão no console
-
-### Cancelar Notificação
-1. Toque no botão **"Cancelar Notificaçao"**
-2. A notificação será removida do sistema
-
-## 🎯 Funcionalidades Detalhadas
+## 🎯 Detalhes técnicos
 
 ### Permissões
-O app solicita permissão ao iniciar:
-- Verifica se o usuário autorizou notificações
-- Define `statusNotification` como `true` se autorizado
-- Exibe mensagem se o usuário negou
 
-### Canais Android
-As notificações usam um canal chamado `"lembrete"` com:
-- Vibração ativada
-- Importância: HIGH (interrompe a tela do usuário)
+Ao iniciar, o app chama `requestPermissionsAsync` e valida autorização com base em:
+- `ios.status` (`AUTHORIZED` ou `PROVISIONAL`)
+- presença de `android` no retorno
 
-### Eventos de Notificação
-- **Foreground**: Detecta interações enquanto app está aberto
-- **Background**: Detecta interações enquanto app está minimizado
-- **PRESS**: Acionado quando usuário toca na notificação
-- **DISMISSED**: Acionado quando usuário descarta a notificação
+### Handler de foreground
 
-## 🧪 Testes
+O app configura:
+- `shouldShowBanner: true`
+- `shouldShowList: true`
+- `shouldPlaySound: true`
+- `shouldSetBadge: true`
 
-Para testar as notificações:
+### Triggers de agendamento (API atual)
 
-1. Coloque o app em background (pressione home)
-2. Envie uma notificação
-3. Verifique se aparece na barra de notificação
-4. Toque para abrir e confirme a interação
+```ts
+trigger: {
+  type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+  seconds: 60,
+}
+```
 
-## 📝 Notas Importantes
+```ts
+trigger: {
+  type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+  seconds: 7 * 24 * 60 * 60,
+  repeats: true,
+}
+```
 
-⚠️ **Permissões Android**: Notificações requerem `android.permission.POST_NOTIFICATIONS`  
-⚠️ **iOS**: Requer configuração de certificados push  
-⚠️ **Versão Notifee**: A versão instalada é `9.1.8` (compatível com Expo)  
+## 🧪 Teste rápido
+
+1. Abra o app
+2. Toque em **ENVIAR NOTIFICAÇÃO**
+3. Verifique o log de recebimento em foreground
+4. Agende uma notificação e valide o ID no console
+5. Cancele e confirme remoção da lista local
+
+## 📝 Observações
+
+- A lista exibida no botão **LISTAR NOTIFICAÇÕES** vem do estado local (`notificationIds`).
+- Após reload do app, essa lista local zera.
+- Dependendo da versão do Android, permissões e comportamento visual podem variar.
 
 ## 📄 Licença
 
-Este projeto é open source e está disponível para uso educacional.
-
-## 👨‍💻 Autor
-
-Desenvolvido como projeto de estudo em React Native com Notifee e Expo.
-
+Uso educacional.

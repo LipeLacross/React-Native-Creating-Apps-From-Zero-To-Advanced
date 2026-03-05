@@ -5,7 +5,8 @@ import * as Notifications from 'expo-notifications'
 // Configurar como as notificações são exibidas quando o app está em foreground
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
-    shouldShowAlert: true,
+    shouldShowBanner: true,
+    shouldShowList: true,
     shouldPlaySound: true,
     shouldSetBadge: true,
   }),
@@ -17,8 +18,14 @@ export default function App(){
 
   useEffect(() => {
     async function getPermission(){
-      const { status } = await Notifications.requestPermissionsAsync();
-      if(status === 'granted'){
+      const permission = await Notifications.requestPermissionsAsync();
+      const iosGranted =
+        permission.ios?.status === Notifications.IosAuthorizationStatus.AUTHORIZED ||
+        permission.ios?.status === Notifications.IosAuthorizationStatus.PROVISIONAL;
+      const androidGranted = !!permission.android;
+      const isGranted = iosGranted || androidGranted;
+
+      if(isGranted){
         console.log("Permissão para notificações concedida")
         setStatusNotification(true);
       }else{
@@ -85,11 +92,12 @@ export default function App(){
         badge: 1,
       },
       trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
         seconds: 60,
       },
     })
 
-    setNotificationIds([...notificationIds, notificationId])
+    setNotificationIds((prevIds) => [...prevIds, notificationId])
     console.log("Notificação agendada:", notificationId)
   }
 
@@ -108,7 +116,7 @@ export default function App(){
 
     const lastId = notificationIds[notificationIds.length - 1];
     await Notifications.cancelScheduledNotificationAsync(lastId)
-    setNotificationIds(notificationIds.filter(id => id !== lastId))
+    setNotificationIds((prevIds) => prevIds.filter((id) => id !== lastId))
     console.log("Notificação cancelada com sucesso!")
   }
 
@@ -128,12 +136,13 @@ export default function App(){
         badge: 1,
       },
       trigger: {
+        type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
         seconds: 7 * 24 * 60 * 60, // 7 dias em segundos
         repeats: true,
       },
     })
 
-    setNotificationIds([...notificationIds, notificationId])
+    setNotificationIds((prevIds) => [...prevIds, notificationId])
     console.log("Notificação recorrente (semanal) agendada:", notificationId)
   }
 

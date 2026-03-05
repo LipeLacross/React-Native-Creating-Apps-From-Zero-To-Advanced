@@ -3,169 +3,117 @@
 🌐🇧🇷 [Portuguese Version of README](README.md)  
 🌐🇺🇸 [English Version of README](README_EN.md) ← You are here
 
-Notifications demonstration application developed in **Expo** with **React Native** and **TypeScript**, using the **expo-notifications** library to manage real-time and scheduled notifications.
+Notification demo app built with **Expo**, **React Native**, and **TypeScript**, using **expo-notifications** for immediate and scheduled local notifications.
 
-## 🔨 Project Features
+## 🔨 Features
 
-✅ **Real-Time Notifications** - Display immediate notifications  
-✅ **Scheduled Notifications** - Schedule notifications for specific times  
-✅ **Recurring Notifications** - Schedule notifications that repeat weekly  
-✅ **Event Handling** - Detect when user interacts with notification  
-✅ **Notification Listing** - View IDs of scheduled notifications  
-✅ **Notification Cancellation** - Remove specific notifications  
-✅ **Permissions** - Request and validate system permissions  
+- Immediate notification
+- Scheduled notification (1 minute)
+- Weekly recurring notification
+- Foreground notification listener
+- Notification response listener (tap handling)
+- Scheduled IDs listing (local state)
+- Cancel last scheduled notification
 
-## ✔️ Technologies Used
+## ✔️ Tech Stack
 
-- **Expo ~55.0.4**: Platform for React Native development
-- **React Native 0.83.2**: Cross-platform mobile framework
-- **TypeScript ~5.9.2**: Static typing for better safety
-- **expo-notifications ~0.28.6**: Native Expo library for managing notifications
-- **React 19.2.0**: UI library
-- **Expo Status Bar ~55.0.4**: Customizable status bar
+- Expo `~55.0.4`
+- React Native `0.83.2`
+- React `19.2.0`
+- TypeScript `~5.9.2`
+- expo-notifications `~55.0.10`
+- expo-constants `~55.0.7`
 
-## 📁 Project Structure
+## 📁 Structure
 
-```
+```text
 NotificationsApp/
-├── App.tsx                 # Main component
-├── index.ts                # Entry point
-├── app.json                # Expo configuration
-├── package.json            # Dependencies
-├── tsconfig.json           # TypeScript configuration
-└── assets/                 # Images and icons
-    ├── icon.png
-    ├── splash-icon.png
-    ├── favicon.png
-    ├── android-icon-*.png
-    └── android-icon-monochrome.png
+├── App.tsx
+├── index.ts
+├── app.json
+├── package.json
+├── tsconfig.json
+└── android/ (generated with prebuild)
 ```
 
-## 🛠️ Installation and Execution
-
-### ⚠️ Important!
-
-This project uses `expo-notifications` which requires **native modules**. Therefore, it **does not work** on standard Expo Go. You need a **Development Build**.
+## 🛠️ Install and Run
 
 ### Prerequisites
 
-- Node.js >= 18
-- npm or yarn
-- Expo Account (free): https://expo.dev
-- EAS CLI: `npm install -g eas-cli`
-- Android Studio Emulator (or real Android device)
+- Node.js 18+
+- Android Studio emulator or Android device
 
-### Quick Installation Steps
+### Run with native build (recommended)
 
-1. **Login to Expo:**
-```bash
-eas login
-```
-
-2. **Install Dependencies:**
 ```bash
 cd NotificationsApp
 npm install
+npx expo prebuild --platform android
+npx expo run:android
 ```
 
-3. **Create Development Build:**
-```bash
-eas build --platform android --profile preview3
-```
+### Start bundler only
 
-4. **Install and Test:**
 ```bash
+cd NotificationsApp
 npm start
 ```
 
-Scan the QR code with the app that was installed.
+## 📱 How to Use
 
-### Alternative: Test Locally
-```bash
-npx expo start --dev-client
-```
-(Requires Android Studio Emulator)
+- **ENVIAR NOTIFICAÇÃO**: sends immediately (`trigger: null`)
+- **AGENDAR NOTIFICAÇÃO**: schedules for 60 seconds
+- **AGENDAR SEMANAL**: schedules every 7 days
+- **LISTAR NOTIFICAÇÕES**: logs IDs stored in local state
+- **CANCELAR NOTIFICAÇÃO**: cancels the latest ID in local state
 
-**Android:**
-```bash
-npm run android
-```
-
-**iOS:**
-```bash
-npm run ios
-```
-
-**Web:**
-```bash
-npm run web
-```
-
-## 📱 How to Use the Application
-
-### Send Notification
-1. Tap the **"ENVIAR NOTIFICAÇÃO"** button
-2. The notification will appear immediately in the notification bar
-
-### Schedule Notification
-1. Tap the **"AGENDAR NOTIFICAÇÃO"** button
-2. A notification will be scheduled for 1 minute ahead
-3. The notification ID will be displayed in the console
-
-### Schedule Weekly Recurring Notification
-1. Tap the **"AGENDAR SEMANAL"** button
-2. A notification will be scheduled to repeat every 7 days
-3. The notification ID will be displayed in the console
-4. The notification will automatically appear every week at the same time
-
-### List Scheduled Notifications
-1. Tap the **"LISTAR NOTIFICAÇÕES"** button
-2. Active notification IDs will appear in the console
-
-### Cancel Notification
-1. Tap the **"CANCELAR NOTIFICAÇÃO"** button
-2. The last scheduled notification will be removed from the system
-
-## 🎯 Detailed Features
+## 🎯 Technical Notes
 
 ### Permissions
-The app requests permission on startup:
-- Checks if user authorized notifications
-- Sets `statusNotification` to `true` if authorized
-- Displays message if user denied
 
-### Foreground Notifications
-When the app is open and receives a notification, it's automatically displayed with sound and vibration.
+On startup, the app calls `requestPermissionsAsync` and resolves authorization using:
+- `ios.status` (`AUTHORIZED` or `PROVISIONAL`)
+- `android` object presence in the permission response
 
-### Background Notifications
-The app detects when the user taps a notification while the app is minimized.
+### Foreground handler
 
-### Scheduling
-- **Immediate**: `trigger: null`
-- **Specific**: `trigger: { seconds: 60 }` (1 minute)
-- **Recurring**: `trigger: { seconds: 604800, repeats: true }` (7 days)
+The app uses:
+- `shouldShowBanner: true`
+- `shouldShowList: true`
+- `shouldPlaySound: true`
+- `shouldSetBadge: true`
 
-## 🧪 Testing
+### Scheduling triggers (current API)
 
-To test notifications:
+```ts
+trigger: {
+  type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+  seconds: 60,
+}
+```
 
-1. Put the app in background (press home)
-2. Send a notification
-3. Check if it appears in the notification bar
-4. Tap to open and confirm the interaction
+```ts
+trigger: {
+  type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+  seconds: 7 * 24 * 60 * 60,
+  repeats: true,
+}
+```
 
-## 📝 Important Notes
+## 🧪 Quick Test
 
-⚠️ **Android Permissions**: Notifications require `android.permission.POST_NOTIFICATIONS`  
-⚠️ **iOS**: Requires push certificate configuration  
-⚠️ **Expo Go**: Uses expo-notifications which is fully compatible  
-⚠️ **Recurrence**: Expo supports recurrence with the `repeats: true` parameter
+1. Open the app
+2. Tap **ENVIAR NOTIFICAÇÃO**
+3. Check foreground log output
+4. Schedule one notification and verify ID in console
+5. Cancel and confirm local list update
+
+## 📝 Notes
+
+- **LISTAR NOTIFICAÇÕES** reads from local state (`notificationIds`).
+- After app reload, this local list resets.
+- Permission prompts and visual behavior can vary by Android version.
 
 ## 📄 License
 
-This project is open source and available for educational use.
-
-## 👨‍💻 Author
-
-Developed as a study project in React Native with Notifee and Expo.
-
+Educational use.

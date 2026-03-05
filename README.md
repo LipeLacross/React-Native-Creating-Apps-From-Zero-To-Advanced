@@ -70,7 +70,7 @@ No diretório do projeto Expo:
 bash
 npx expo doctor
 Se usar a expo-cli antiga e receber mensagem de incompatibilidade, tente:
-
+npx expo install --fix
 bash
 expo-cli doctor --fix-dependencies
 Se npx expo doctor não resolver, instale/execute o pacote:
@@ -109,9 +109,21 @@ npx expo start
 #pastas nativas
 npx expo prebuild
 
+npx expo prebuild --platform android
+npx expo prebuild --platform ios
+npx expo prebuild --platform web
+npx expo prebuild --platform all
+
+
 #
 npx expo prebuild:ios
+npx expo prebuild:android
+npx expo prebuild:web
+npx expo prebuild:all
+
 npx expo run:android
+npx expo run:ios
+
 
 # Ou via npm
 npm run android

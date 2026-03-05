@@ -1,133 +1,115 @@
 import { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Button } from 'react-native'
+import * as Notifications from 'expo-notifications'
 
-import notifee, {
-  AuthorizationStatus,
-  EventType,
-  AndroidImportance,
-  TriggerType,
-  TimestampTrigger,
-  IntervalTrigger
-} from '@notifee/react-native'
+// Configurar como as notificações são exibidas quando o app está em foreground
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
 
 export default function App(){
   const [statusNotification, setStatusNotification] = useState(true);
+  const [notificationIds, setNotificationIds] = useState<string[]>([]);
 
   useEffect(() => {
     async function getPermission(){
-      const settings = await notifee.requestPermission();
-      if(settings.authorizationStatus >= AuthorizationStatus.AUTHORIZED){
-        console.log("Permission: ", settings.authorizationStatus)
+      const { status } = await Notifications.requestPermissionsAsync();
+      if(status === 'granted'){
+        console.log("Permissão para notificações concedida")
         setStatusNotification(true);
       }else{
-        console.log("Usuario negou a permissao!")
+        console.log("Usuário negou a permissão!")
         setStatusNotification(false);
       }
-
-      
     }
 
     getPermission();
-
   }, [])
 
-
-  notifee.onBackgroundEvent(async ({ type, detail }) => {
-    const { notification, pressAction } = detail;
-
-    if(type === EventType.PRESS){
-      console.log("TOCOU NA NOTIFICACAO BACKGROUND: ", pressAction?.id)
-      if(notification?.id){
-        await notifee.cancelNotification(notification?.id)
-      }
-
-    }
-
-    console.log("EVENT BACKGROUND")
-
-  } )
-
-
+  // Listener para notificações quando app está em foreground
   useEffect(() => {
-    return notifee.onForegroundEvent(({ type, detail }) => {
-      switch(type){
-        case EventType.DISMISSED:
-          console.log("USUARIO DESCARTOU A NOTIFICACAO")
-          break;
-        case EventType.PRESS:
-          console.log("TOCOU: ", detail.notification)
-          console.log("Title ", detail.notification?.title)
-          console.log("Corpo ", detail.notification?.body)
-      }
-    })
+    const subscription = Notifications.addNotificationReceivedListener(notification => {
+      console.log("Notificação recebida (foreground):", notification);
+    });
+
+    return () => {
+      subscription.remove();
+    };
   }, [])
 
+  // Listener para quando usuário toca na notificação
+  useEffect(() => {
+    const subscription = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log("Usuário tocou na notificação:", response.notification.request.content);
+    });
 
+    return () => {
+      subscription.remove();
+    };
+  }, [])
 
   async function handleNotificate(){
+    if(!statusNotification){
+      console.log("Permissão de notificação não concedida");
+      return;
+    }
+
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Estudar Programação!",
+        body: "Lembrete para estudar React Native amanhã!",
+        sound: 'default',
+        badge: 1,
+      },
+      trigger: null, // null significa imediato
+    })
+
+    console.log("Notificação enviada!");
+  }
+
+  async function handleScheduleNotification(){
     if(!statusNotification){
       return;
     }
 
-    const channelId = await notifee.createChannel({
-      id: 'lembrete',
-      name: 'lembrete',
-      vibration: true,
-      importance: AndroidImportance.HIGH
+    // Agendar para 1 minuto a frente
+    const notificationId = await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Lembrete Estudo",
+        body: "Estudar JavaScript às 15:30",
+        sound: 'default',
+        badge: 1,
+      },
+      trigger: {
+        seconds: 60,
+      },
     })
 
-    await notifee.displayNotification({
-      id: 'lembrete',
-      title: 'Estudar programaçao!',
-      body: 'Lembrete para estudar react-native amanha!',
-      android:{
-        channelId,
-        pressAction: {
-          id: 'default'
-        }
-      }
-    })
-
+    setNotificationIds([...notificationIds, notificationId])
+    console.log("Notificação agendada:", notificationId)
   }
-
-
-  async function handleScheduleNotification(){
-    const date = new Date(Date.now());
-
-    date.setMinutes(date.getMinutes() + 1);
-
-    const trigger: TimestampTrigger = {
-      type: TriggerType.TIMESTAMP,
-      timestamp: date.getTime()
-    }
-
-    const notification = await notifee.createTriggerNotification({
-      title: "Lembrete Estudo",
-      body: "Estudar JavaScript as 15:30",
-      android:{
-        channelId: 'lembrete',
-        importance: AndroidImportance.HIGH,
-        pressAction: {
-          id: 'default',
-        }
-      }
-    }, trigger)
-
-
-    console.log("Notification agendada: ",notification)
-  }
-
 
   function handleListNotifications(){
-    notifee.getTriggerNotificationIds()
-    .then((ids) => {
-      console.log(ids)
-    })
+    console.log("IDs das notificações agendadas:", notificationIds)
+    if(notificationIds.length === 0){
+      console.log("Nenhuma notificação agendada")
+    }
   }
 
   async function handleCancelNotification(){
-    await notifee.cancelNotification("0xmUraKUfElFvtLuRTJY")
-    console.log("Notificaçao cancelada com sucesso!")
+    if(notificationIds.length === 0){
+      console.log("Nenhuma notificação para cancelar")
+      return;
+    }
+
+    const lastId = notificationIds[notificationIds.length - 1];
+    await Notifications.cancelScheduledNotificationAsync(lastId)
+    setNotificationIds(notificationIds.filter(id => id !== lastId))
+    console.log("Notificação cancelada com sucesso!")
   }
 
   async function handleScheduleRecurringNotification(){
@@ -135,61 +117,58 @@ export default function App(){
       return;
     }
 
-    // Agendando notificação recorrente a cada 7 dias (1 semana)
-    const trigger: IntervalTrigger = {
-      type: TriggerType.INTERVAL,
-      interval: 7 * 24 * 60 * 60, // 7 dias em segundos
-    }
-
-    const channelId = await notifee.createChannel({
-      id: 'lembrete-semanal',
-      name: 'Lembrete Semanal',
-      vibration: true,
-      importance: AndroidImportance.HIGH
+    // Agendar para se repetir diariamente (86400 segundos = 1 dia)
+    // Nota: Expo não suporta notificações mensais/semanais direto
+    // Para semanal, usamos 7 * 24 * 60 * 60 = 604800 segundos
+    const notificationId = await Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Lembrete Semanal",
+        body: "Não esqueça de revisar seus estudos de React Native!",
+        sound: 'default',
+        badge: 1,
+      },
+      trigger: {
+        seconds: 7 * 24 * 60 * 60, // 7 dias em segundos
+        repeats: true,
+      },
     })
 
-    const notificationId = await notifee.createTriggerNotification({
-      title: "Lembrete Semanal",
-      body: "Não esqueça de revisar seus estudos de React Native!",
-      android:{
-        channelId,
-        importance: AndroidImportance.HIGH,
-        pressAction: {
-          id: 'default',
-        }
-      }
-    }, trigger)
-
-    console.log("Notificaçao recorrente (semanal) agendada: ", notificationId)
+    setNotificationIds([...notificationIds, notificationId])
+    console.log("Notificação recorrente (semanal) agendada:", notificationId)
   }
-
 
   return(
     <View style={styles.container}>
-      <Text>Notificaçoes App</Text>
+      <Text style={styles.title}>Notificações App</Text>
+
       <Button
-        title="Enviar notificaçao"
+        title="ENVIAR NOTIFICAÇÃO"
         onPress={handleNotificate}
+        color="#007AFF"
       />
 
       <Button
-        title="Agendar notificaçao"
+        title="AGENDAR NOTIFICAÇÃO"
         onPress={handleScheduleNotification}
+        color="#007AFF"
       />
 
       <Button
-        title="Listar notificacoes"
+        title="LISTAR NOTIFICAÇÕES"
         onPress={handleListNotifications}
+        color="#007AFF"
       />
 
       <Button
-        title="Cancelar Notificaçao"
+        title="CANCELAR NOTIFICAÇÃO"
         onPress={handleCancelNotification}
+        color="#007AFF"
       />
 
       <Button
-        title="Agendar Semanal"
+        title="AGENDAR SEMANAL"
         onPress={handleScheduleRecurringNotification}
+        color="#007AFF"
       />
     </View>
   )
@@ -197,8 +176,15 @@ export default function App(){
 
 const styles = StyleSheet.create({
   container:{
-    flex:1,
+    flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: '#333',
   }
 })

@@ -3,14 +3,13 @@
 🌐🇧🇷 [Portuguese Version of README](README.md)  
 🌐🇺🇸 [English Version of README](README_EN.md) ← You are here
 
-Notifications demonstration application developed in **Expo** with **React Native** and **TypeScript**, using the **Notifee** library to manage real-time and scheduled notifications.
+Notifications demonstration application developed in **Expo** with **React Native** and **TypeScript**, using the **expo-notifications** library to manage real-time and scheduled notifications.
 
 ## 🔨 Project Features
 
 ✅ **Real-Time Notifications** - Display immediate notifications  
 ✅ **Scheduled Notifications** - Schedule notifications for specific times  
 ✅ **Recurring Notifications** - Schedule notifications that repeat weekly  
-✅ **Channel Management** - Create Android channels with configurable importance  
 ✅ **Event Handling** - Detect when user interacts with notification  
 ✅ **Notification Listing** - View IDs of scheduled notifications  
 ✅ **Notification Cancellation** - Remove specific notifications  
@@ -21,7 +20,7 @@ Notifications demonstration application developed in **Expo** with **React Nativ
 - **Expo ~55.0.4**: Platform for React Native development
 - **React Native 0.83.2**: Cross-platform mobile framework
 - **TypeScript ~5.9.2**: Static typing for better safety
-- **Notifee ^9.1.8**: Robust library for managing notifications
+- **expo-notifications ~0.28.6**: Native Expo library for managing notifications
 - **React 19.2.0**: UI library
 - **Expo Status Bar ~55.0.4**: Customizable status bar
 
@@ -44,30 +43,48 @@ NotificationsApp/
 
 ## 🛠️ Installation and Execution
 
+### ⚠️ Important!
+
+This project uses `expo-notifications` which requires **native modules**. Therefore, it **does not work** on standard Expo Go. You need a **Development Build**.
+
 ### Prerequisites
 
 - Node.js >= 18
 - npm or yarn
-- Expo CLI: `npm install -g expo-cli`
+- Expo Account (free): https://expo.dev
+- EAS CLI: `npm install -g eas-cli`
+- Android Studio Emulator (or real Android device)
 
-### Installation Steps
+### Quick Installation Steps
 
-1. Navigate to project folder:
+1. **Login to Expo:**
 ```bash
-cd NotificationsApp
+eas login
 ```
 
-2. Install dependencies:
+2. **Install Dependencies:**
 ```bash
+cd NotificationsApp
 npm install
 ```
 
-3. Start the Expo server:
+3. **Create Development Build:**
+```bash
+eas build --platform android --profile preview3
+```
+
+4. **Install and Test:**
 ```bash
 npm start
 ```
 
-4. Run on different platforms:
+Scan the QR code with the app that was installed.
+
+### Alternative: Test Locally
+```bash
+npx expo start --dev-client
+```
+(Requires Android Studio Emulator)
 
 **Android:**
 ```bash
@@ -87,27 +104,27 @@ npm run web
 ## 📱 How to Use the Application
 
 ### Send Notification
-1. Tap the **"Enviar notificaçao"** button
+1. Tap the **"ENVIAR NOTIFICAÇÃO"** button
 2. The notification will appear immediately in the notification bar
 
 ### Schedule Notification
-1. Tap the **"Agendar notificaçao"** button
+1. Tap the **"AGENDAR NOTIFICAÇÃO"** button
 2. A notification will be scheduled for 1 minute ahead
 3. The notification ID will be displayed in the console
 
 ### Schedule Weekly Recurring Notification
-1. Tap the **"Agendar Semanal"** button
+1. Tap the **"AGENDAR SEMANAL"** button
 2. A notification will be scheduled to repeat every 7 days
 3. The notification ID will be displayed in the console
 4. The notification will automatically appear every week at the same time
 
 ### List Scheduled Notifications
-1. Tap the **"Listar notificacoes"** button
+1. Tap the **"LISTAR NOTIFICAÇÕES"** button
 2. Active notification IDs will appear in the console
 
 ### Cancel Notification
-1. Tap the **"Cancelar Notificaçao"** button
-2. The notification will be removed from the system
+1. Tap the **"CANCELAR NOTIFICAÇÃO"** button
+2. The last scheduled notification will be removed from the system
 
 ## 🎯 Detailed Features
 
@@ -117,16 +134,16 @@ The app requests permission on startup:
 - Sets `statusNotification` to `true` if authorized
 - Displays message if user denied
 
-### Android Channels
-Notifications use a channel called `"lembrete"` with:
-- Vibration enabled
-- Importance: HIGH (interrupts user's screen)
+### Foreground Notifications
+When the app is open and receives a notification, it's automatically displayed with sound and vibration.
 
-### Notification Events
-- **Foreground**: Detects interactions while app is open
-- **Background**: Detects interactions while app is minimized
-- **PRESS**: Triggered when user taps the notification
-- **DISMISSED**: Triggered when user dismisses the notification
+### Background Notifications
+The app detects when the user taps a notification while the app is minimized.
+
+### Scheduling
+- **Immediate**: `trigger: null`
+- **Specific**: `trigger: { seconds: 60 }` (1 minute)
+- **Recurring**: `trigger: { seconds: 604800, repeats: true }` (7 days)
 
 ## 🧪 Testing
 
@@ -141,7 +158,8 @@ To test notifications:
 
 ⚠️ **Android Permissions**: Notifications require `android.permission.POST_NOTIFICATIONS`  
 ⚠️ **iOS**: Requires push certificate configuration  
-⚠️ **Notifee Version**: Installed version is `9.1.8` (compatible with Expo)  
+⚠️ **Expo Go**: Uses expo-notifications which is fully compatible  
+⚠️ **Recurrence**: Expo supports recurrence with the `repeats: true` parameter
 
 ## 📄 License
 

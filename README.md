@@ -198,65 +198,47 @@ Para um emulador mais leve, escolha um perfil com:
 
 ---
 
-## ✅ Resumo do Fluxo de Trabalho
+## 🔑 Publicação na Google Play Store
 
-1. **Configurar ambiente** (Node.js, JDK 17, Android Studio)
-2. **Criar projeto** (`npx react-native init MeuApp`)
-3. **Abrir emulador** pelo Android Studio
-4. **Executar app** (`npm run android` ou `npx react-native run-android`)
-5. **Desenvolver** com recarregamento rápido (mantenha `npm start` rodando)
-6. **Gerar APK** para teste (`./gradlew assembleDebug`)
-7. **Gerar bundle** para publicação (`./gradlew bundleRelease`)
+### 1️⃣ Gerar a Keystore (Chave de Upload)
+
+**Windows (como administrador):**
+```bash
+cd "C:\Program Files\Java\jdk-17.x.x_x\bin"
+keytool -genkeypair -v -storetype PKCS12 -keystore my-upload-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
+```
+
+**macOS:**
+```bash
+sudo keytool -genkey -v -keystore my-upload-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
+```
+
+**O que será solicitado:**
+- Senha do keystore
+- Senha da chave
+- Nome, unidade, cidade, estado e país
+
+**Resultado:** Arquivo `my-upload-key.keystore` gerado.
 
 ---
 
-## 🔍 Solução de Problemas Comuns
+### 2️⃣ Configurar a Keystore no Projeto
 
-### Problema: Emulador não detectado
-**Solução:** Verifique se o ANDROID_HOME está configurado corretamente e se o emulador está aberto antes de rodar `run-android`.
-
-### Problema: Erro de versão do Java
-**Solução:** Certifique-se de que o JDK 17 está instalado e configurado no PATH.
-
-### Problema: Build lento
-**Solução:** Mantenha o daemon do Gradle rodando (`./gradlew assembleDebug` sem `--no-daemon`) e evite limpar o cache desnecessariamente.
-
-📱 Guia Resumido: Gerar Keystore e Publicar na Play Store
-1️⃣ Gerar a Keystore (Chave de Upload)
-Windows (como admin):
-
-bash
-cd "C:\Program Files\Java\jdk-17.x.x_x\bin"
-keytool -genkeypair -v -storetype PKCS12 -keystore my-upload-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
-macOS:
-
-bash
-sudo keytool -genkey -v -keystore my-upload-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
-O que vai pedir:
-
-Senha do keystore
-
-Senha da chave
-
-Nome, unidade, cidade, estado, país
-
-Resultado: Arquivo my-upload-key.keystore gerado.
-
-2️⃣ Configurar no Projeto
-Mover o arquivo:
-
-text
+**Passo 1:** Mova o arquivo para a pasta correta
+```
 my-upload-key.keystore → android/app/
-Editar android/gradle.properties (adicionar no final):
+```
 
-properties
+**Passo 2:** Edite o arquivo `android/gradle.properties` (adicione no final)
+```properties
 MYAPP_UPLOAD_STORE_FILE=my-upload-key.keystore
 MYAPP_UPLOAD_KEY_ALIAS=my-key-alias
 MYAPP_UPLOAD_STORE_PASSWORD=suasenha
 MYAPP_UPLOAD_KEY_PASSWORD=suasenha
-Editar android/app/build.gradle (dentro de android { ... }):
+```
 
-gradle
+**Passo 3:** Edite o arquivo `android/app/build.gradle` (dentro de `android { ... }`)
+```gradle
 signingConfigs {
     release {
         if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
@@ -273,13 +255,82 @@ buildTypes {
         signingConfig signingConfigs.release
     }
 }
-3️⃣ Gerar o AAB (Android App Bundle)
-bash
+```
+
+---
+
+### 3️⃣ Gerar o AAB (Android App Bundle)
+
+```bash
 npx react-native build-android --mode=release
-Arquivo gerado: android/app/build/outputs/bundle/release/app-release.aab
+```
 
-gradlew bundle release
+**Arquivo gerado:**
+```
+android/app/build/outputs/bundle/release/app-release.aab
+```
 
-4️⃣ Testar antes de publicar
-bash
+---
+
+### 4️⃣ Testar antes de publicar
+
+```bash
 npm run android -- --mode="release"
+```
+
+---
+
+### 5️⃣ Publicar na Play Store
+
+1. Acesse [Google Play Console](https://play.google.com/console/)
+2. Crie um novo app
+3. Faça upload do arquivo `.aab`
+4. Complete as informações da loja
+5. Envie para revisão
+
+---
+
+### ⚠️ **Avisos Importantes**
+
+- Guarde a keystore em local seguro (não perca!)
+- As senhas não podem ser recuperadas
+- Para atualizações futuras, use a **mesma keystore**
+
+---
+
+## ✅ Resumo do Fluxo de Trabalho
+
+| Etapa | Descrição | Comando |
+|-------|-----------|---------|
+| 1 | Configurar ambiente | Node.js, JDK 17, Android Studio |
+| 2 | Criar projeto | `npx react-native init MeuApp` |
+| 3 | Abrir emulador | Android Studio |
+| 4 | Executar app | `npm run android` |
+| 5 | Desenvolver | `npm start` (deixe rodando) |
+| 6 | Gerar keystore | `keytool -genkeypair ...` |
+| 7 | Configurar assinatura | `gradle.properties` + `build.gradle` |
+| 8 | Gerar APK para teste | `./gradlew assembleDebug` |
+| 9 | Gerar bundle para Play Store | `./gradlew bundleRelease` |
+| 10 | Publicar | Google Play Console |
+
+---
+
+## 🔍 Solução de Problemas Comuns
+
+### Problema: Emulador não detectado
+**Solução:** Verifique se o ANDROID_HOME está configurado corretamente e se o emulador está aberto antes de rodar `run-android`.
+
+### Problema: Erro de versão do Java
+**Solução:** Certifique-se de que o JDK 17 está instalado e configurado no PATH.
+
+### Problema: Build lento
+**Solução:** Mantenha o daemon do Gradle rodando (`./gradlew assembleDebug` sem `--no-daemon`) e evite limpar o cache desnecessariamente.
+
+---
+
+## 📚 Recursos Adicionais
+
+- [Documentação Oficial React Native](https://reactnative.dev/)
+- [Expo Documentation](https://docs.expo.dev/)
+- [React Navigation](https://reactnavigation.org/)
+- [Google Play Console](https://play.google.com/console/)

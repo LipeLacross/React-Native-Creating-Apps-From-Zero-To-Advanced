@@ -1,224 +1,285 @@
 ## 📱 React Native - Guia Completo do Zero ao Avançado
 
-Este projeto foi desenvolvido baseado no curso de React Native do Professor Matheus Fraga, focado na criação de apps nativos para Android e iOS. Utiliza tecnologias como JavaScript, React Native e Flexbox. O objetivo é criar aplicativos mobile de alta performance com aparência nativa e publicá-los nas lojas de aplicativos.
+Este guia foi desenvolvido baseado no curso de React Native do Professor Matheus Fraga, focado na criação de apps nativos para Android e iOS utilizando JavaScript, React Native e Flexbox. O objetivo é criar aplicativos mobile de alta performance com aparência nativa e publicá-los nas lojas de aplicativos.
 
 ---
 
-## 🔧 Guias de Instalação
+## 🔧 Configuração Inicial do Ambiente
 
-### Links Úteis:
-- [Ambiente Linux](https://sujeitoprogramador.com/ambiente-linux/)
-- [Ambiente Linux (alternativo)](https://sujeitoprogramador.com/ambiente-linux/)
-- [React Native no macOS](https://sujeitoprogramador.com/react-native-macos/)
-- [Documentação Oficial React Native](https://reactnative.dev/docs/environment-setup)
-- [Documentação Expo](https://docs.expo.dev/)
+### Pré-requisitos
 
-### Instalação no Windows (com Chocolatey):
+Antes de começar, você precisará instalar:
+
+- **Node.js** (versão LTS)
+- **JDK 17** (Java Development Kit)
+- **Android Studio** com SDK configurado
+- **Chocolatey** (gerenciador de pacotes para Windows - opcional)
+
+### Instalação no Windows (com Chocolatey)
+
 ```bash
 choco install -y nodejs-lts microsoft-openjdk17
 ```
 
-**⚠️ Atenção na variável ambiente openjdk17:**
-Caso não encontre a pasta onde está instalada, ela também pode estar em:
+**⚠️ Importante:** Após instalar o JDK, verifique se o caminho está configurado corretamente:
 ```
-C:\Program Files\microsoft\ (Aqui deve estar a pasta do openjdk17)
+C:\Program Files\microsoft\ (pasta do openjdk17)
 ```
 
-### Configuração do ANDROID_HOME:
+### Configuração do Android SDK
+
+A variável de ambiente `ANDROID_HOME` deve apontar para:
 ```
-C:\Users\felip\AppData\Local\Android\Sdk
+C:\Users\SEU_USUARIO\AppData\Local\Android\Sdk
 ```
+
+### Links Úteis para Configuração
+
+- [Ambiente Linux](https://sujeitoprogramador.com/ambiente-linux/)
+- [React Native no macOS](https://sujeitoprogramador.com/react-native-macos/)
+- [Documentação Oficial React Native](https://reactnative.dev/docs/environment-setup)
+- [Documentação Expo](https://docs.expo.dev/)
 
 ---
 
-## 🚀 Comandos React Native
+## 🚀 Criando e Executando Projetos
 
-### Criar Novo Projeto:
+### React Native CLI (Projeto Puro)
+
+A partir da versão 0.71, o React Native já cria projetos com TypeScript configurado automaticamente.
 
 ```bash
-# Comando padrão
-npx @react-native-community/cli@latest init nomeapp
+# Criar novo projeto
+npx @react-native-community/cli@latest init MeuApp
 
-# Com template específico
-npx react-native init NomeDoProjeto --template <nome-do-template>
-
-# Exemplo com TypeScript
-npx react-native init MeuApp --template react-native-template-typescript
-```
-
-### Executar o Projeto:
-
-**Android:**
-```bash
-# Após acessar a pasta do projeto
+# Executar no Android (com emulador aberto)
 npx react-native run-android
 
-# Com log detalhado
+# Executar com log detalhado
 npx react-native run-android --verbose > build-log.txt
-```
 
-**iOS (Mac):**
-```bash
+# Executar no iOS (apenas Mac)
 npx react-native run-ios
 ```
 
-*💡 Lembre-se: Antes de rodar o comando, o emulador precisa estar aberto!*
+### Expo (Alternativa para desenvolvimento rápido)
 
-
-No diretório do projeto Expo:
-
-bash
-npx expo doctor
-Se usar a expo-cli antiga e receber mensagem de incompatibilidade, tente:
-npx expo install --fix
-bash
-expo-cli doctor --fix-dependencies
-Se npx expo doctor não resolver, instale/execute o pacote:
-
-bash
-npx expo-doctor --help
-Para React Native puro:
-
-bash
-npx react-native doctor
-npx react-native doctor --fix
-
-## ⚡ Projetos com Expo
-
-### Criar App com Expo:
 ```bash
 # Criar novo projeto
-npx create-expo-app nomeapp
+npx create-expo-app MeuApp
 
 # Listar templates disponíveis
-npx create-expo-app nomeapp -t
-```
+npx create-expo-app MeuApp -t
 
-Na lista de templates, selecione a opção desejada:
-- Default - includes tools recommended for most app developers
-- **Blank** (recomendado)
-- Blank (TypeScript)
-- Navigation (TypeScript)
-- Blank (Bare)
-
-### Executar App Expo:
-```bash
 # Iniciar o projeto
 npx expo start
 
-#pastas nativas
+# Iniciar limpando cache
+npx expo start -c
+
+# Gerar pastas nativas (para projetos que precisam de código nativo)
 npx expo prebuild
-
-npx expo prebuild --platform android
-npx expo prebuild --platform ios
-npx expo prebuild --platform web
-npx expo prebuild --platform all
-
-
-#
-npx expo prebuild:ios
-npx expo prebuild:android
-npx expo prebuild:web
-npx expo prebuild:all
-
 npx expo run:android
-npx expo run:ios
+```
 
+### Diferença entre npm run android e npm run start
 
-# Ou via npm
-npm run android
+| Comando | O que faz | Quando usar |
+|---------|-----------|-------------|
+| **`npm run android`** | Compila, instala e abre o app | Quando quer testar o app agora |
+| **`npm run start`** | Inicia o Metro Bundler (servidor JS) | Durante o desenvolvimento (deixa rodando) |
+
+---
+
+## 🛠️ Gerenciamento de Dependências
+
+### Comandos npm para resolver conflitos
+
+| Comando | O que faz | Quando usar |
+|---------|-----------|-------------|
+| `npm install` | Instala dependências respeitando peerDependencies | Padrão recomendado |
+| `npm install --legacy-peer-deps` | Ignora conflitos de peerDependencies | Para instalações rápidas com conflitos |
+| `npm install --force` | Força instalação ignorando conflitos | Último recurso |
+| `npm update` | Atualiza pacotes dentro das versões permitidas | Para manter dependências atualizadas |
+
+### Diagnóstico do Projeto
+
+```bash
+# Verificar problemas no projeto Expo
+npx expo doctor
+
+# Corrigir dependências automaticamente
+npx expo install --fix
+
+# Verificar problemas no React Native CLI
+npx react-native doctor
+npx react-native doctor --fix
 ```
 
 ---
 
-## 📱 npm run android vs npm run start
+## 📱 Comandos Gradle (Build Android)
 
-### 1. **`npm run android`** 🏃‍♂️
+### Principais Comandos
+
 ```bash
-npm run android
+# Navegar até a pasta android
+cd android
+
+# Limpar builds anteriores (mais usado)
+./gradlew clean
+
+# Limpar tudo (builds, caches, arquivos temporários)
+./gradlew cleanBuildCache
+
+# Apenas compilar (mais rápido para verificar erros)
+./gradlew assembleDebug
+
+# Compilar e instalar (mas não abre)
+./gradlew installDebug
+
+# Compilar para release
+./gradlew assembleRelease
+
+# Gerar bundle para Play Store
+./gradlew bundleRelease
 ```
-**O que faz:**
-- Compila o app **E** instala no dispositivo/emulador **E** abre
-- É um atalho para `react-native run-android`
-- Já faz tudo de uma vez: compila + instala + abre
 
-**Quando usar:**
-- Quando você quer testar o app no celular agora
-- Quando fez mudanças e quer ver funcionando
+### Otimização do Gradle
 
-### 2. **`npm run start`** 🚀
-```bash
-npm run start
-```
-**O que faz:**
-- Inicia o Metro Bundler (servidor que empacota o JavaScript)
-- Mostra um QR Code no terminal
-- Fica esperando o app conectar nele
+| Comando | Usa daemon? | Processo fica rodando? | Próximo build |
+|---------|-------------|------------------------|---------------|
+| `./gradlew assembleDebug` | ✅ Sim | ✅ Sim (fica na memória) | Mais rápido |
+| `./gradlew assembleDebug --no-daemon` | ❌ Não | ❌ Não | Mais lento |
 
-**Quando usar:**
-- Quando você já tem o app instalado no celular e quer desenvolver com recarregamento rápido
-- Você roda isso **uma vez** e deixa rodando enquanto desenvolve
+### Limpeza de Cache
 
----
-enhuma	npm tenta resolver peerDependencies estritamente	Preferível; força correção de versões
---legacy-peer-deps	Ignora conflitos de peerDependencies (comportamento antigo)	Quando você precisa instalar rápido e não consegue resolver versões; use temporariamente.
---force	Força instalação mesmo com conflitos e possíveis quebras	Último recurso; pode instalar versões incompatíveis.
-npm update
-## 🛠️ Comandos Gradle (Build Android)
-
-```bash
-# Só compila (mais rápido para verificar erros)
-.\gradlew.bat assembleDebug
-
-# Compila e instala (mas não abre)
-.\gradlew.bat installDebug
-
-# Compila, instala e abre (igual ao run-android)
-react-native run-android
-
-# Limpa builds anteriores (útil se tiver problemas de cache)
-.\gradlew.bat clean
-📊 Comparação:
-Comando	Usa daemon?	Processo fica rodando?	Próximo build
-.\gradlew.bat clean	✅ Sim	✅ Sim (fica na memória)	Mais rápido
-.\gradlew.bat clean --no-daemon	❌ Não	❌ Não (morre ao terminar)	Mais lento
+| Caminho | O que é | Pode apagar? |
+|---------|---------|--------------|
+| `C:\Users\SEU_USUARIO\.gradle` | Cache global do Gradle | ✅ SIM (recria automaticamente) |
+| `C:\Users\SEU_USUARIO\.android\cache` | Cache do Android | ✅ SIM |
 
 ---
 
-## 📁 Onde Mexer Mais? (Arquivos Importantes)
+## 📁 Arquivos Importantes do Projeto
+
+### Estrutura de Configuração
 
 | Arquivo | Frequência | Casos Comuns |
-|---------|------------|--------------|
-| **app/build.gradle** | 🔥 Alta | Versões, dependências, signing |
-| **gradle.properties** | 🟡 Média | Performance, features flags |
-| **build.gradle** | 🟢 Baixa | Atualizar SDK, Kotlin |
-| **settings.gradle** | ⚪ Rara | Problemas de linking |
-
----
-
-## 📱 Dicas de Emulador
-
-Se você quer o emulador mais leve, escolha um perfil com **resolução menor e densidade (dpi) menor** — por exemplo **Small Phone** ou um perfil genérico de **720×1280**.
+|---------|:----------:|--------------|
+| **`android/app/build.gradle`** | 🔥 Alta | Versões, dependências, configuração de assinatura |
+| **`android/gradle.properties`** | 🟡 Média | Performance, flags de features |
+| **`android/build.gradle`** | 🟢 Baixa | Atualizar SDK, versão do Kotlin |
+| **`android/settings.gradle`** | ⚪ Rara | Problemas de linking de módulos |
 
 ---
 
 ## 🎨 Ícones e Navegação
 
-### React Native Vector Icons:
+### React Native Vector Icons
+
 - [Repositório GitHub](https://github.com/oblador/react-native-vector-icons)
 - [Biblioteca de Ícones](https://oblador.github.io/react-native-vector-icons/)
 
-### React Navigation:
+### React Navigation
+
 - [Documentação Oficial](https://reactnavigation.org/docs/getting-started/)
+
+---
+
+## 📱 Dicas para Emulador
+
+### Escolhendo o Perfil Ideal
+
+Para um emulador mais leve, escolha um perfil com:
+- **Resolução menor** (ex: 720×1280)
+- **Densidade de pixels (dpi) menor**
+- Perfil **Small Phone** (recomendado)
 
 ---
 
 ## ✅ Resumo do Fluxo de Trabalho
 
-1. **Instalar ambiente** (Node.js, JDK, Android Studio)
+1. **Configurar ambiente** (Node.js, JDK 17, Android Studio)
 2. **Criar projeto** (`npx react-native init MeuApp`)
-3. **Abrir emulador** (Android Studio)
+3. **Abrir emulador** pelo Android Studio
 4. **Executar app** (`npm run android` ou `npx react-native run-android`)
-5. **Desenvolver** com recarregamento rápido
-6. **Gerar APK** (`.\gradlew.bat assembleDebug`)
+5. **Desenvolver** com recarregamento rápido (mantenha `npm start` rodando)
+6. **Gerar APK** para teste (`./gradlew assembleDebug`)
+7. **Gerar bundle** para publicação (`./gradlew bundleRelease`)
 
+---
+
+## 🔍 Solução de Problemas Comuns
+
+### Problema: Emulador não detectado
+**Solução:** Verifique se o ANDROID_HOME está configurado corretamente e se o emulador está aberto antes de rodar `run-android`.
+
+### Problema: Erro de versão do Java
+**Solução:** Certifique-se de que o JDK 17 está instalado e configurado no PATH.
+
+### Problema: Build lento
+**Solução:** Mantenha o daemon do Gradle rodando (`./gradlew assembleDebug` sem `--no-daemon`) e evite limpar o cache desnecessariamente.
+
+📱 Guia Resumido: Gerar Keystore e Publicar na Play Store
+1️⃣ Gerar a Keystore (Chave de Upload)
+Windows (como admin):
+
+bash
+cd "C:\Program Files\Java\jdk-17.x.x_x\bin"
+keytool -genkeypair -v -storetype PKCS12 -keystore my-upload-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
+macOS:
+
+bash
+sudo keytool -genkey -v -keystore my-upload-key.keystore -alias my-key-alias -keyalg RSA -keysize 2048 -validity 10000
+O que vai pedir:
+
+Senha do keystore
+
+Senha da chave
+
+Nome, unidade, cidade, estado, país
+
+Resultado: Arquivo my-upload-key.keystore gerado.
+
+2️⃣ Configurar no Projeto
+Mover o arquivo:
+
+text
+my-upload-key.keystore → android/app/
+Editar android/gradle.properties (adicionar no final):
+
+properties
+MYAPP_UPLOAD_STORE_FILE=my-upload-key.keystore
+MYAPP_UPLOAD_KEY_ALIAS=my-key-alias
+MYAPP_UPLOAD_STORE_PASSWORD=suasenha
+MYAPP_UPLOAD_KEY_PASSWORD=suasenha
+Editar android/app/build.gradle (dentro de android { ... }):
+
+gradle
+signingConfigs {
+    release {
+        if (project.hasProperty('MYAPP_UPLOAD_STORE_FILE')) {
+            storeFile file(MYAPP_UPLOAD_STORE_FILE)
+            storePassword MYAPP_UPLOAD_STORE_PASSWORD
+            keyAlias MYAPP_UPLOAD_KEY_ALIAS
+            keyPassword MYAPP_UPLOAD_KEY_PASSWORD
+        }
+    }
+}
+
+buildTypes {
+    release {
+        signingConfig signingConfigs.release
+    }
+}
+3️⃣ Gerar o AAB (Android App Bundle)
+bash
+npx react-native build-android --mode=release
+Arquivo gerado: android/app/build/outputs/bundle/release/app-release.aab
+
+gradlew bundle release
+
+4️⃣ Testar antes de publicar
+bash
+npm run android -- --mode="release"

@@ -5,10 +5,6 @@ export const Background = styled.SafeAreaView`
   background-color: #F0F4FF;
 `;
 
-export const ListBalance = styled.FlatList`
-  max-height: 190px;
-`;
-
 export const Area = styled.View`
   margin-top: 22px;
   background-color: #FFF;
@@ -27,11 +23,4 @@ export const Title = styled.Text`
   margin-bottom: 14px;
   font-weight: bold;
   font-size: 18px;
-
 `;
-
-export const List = styled.FlatList`
-  flex:1;
-  background-color: #FFF;
-`;
-

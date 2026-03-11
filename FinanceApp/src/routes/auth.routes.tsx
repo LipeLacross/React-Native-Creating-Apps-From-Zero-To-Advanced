@@ -1,10 +1,11 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import type { AuthStackParamList } from './routeTypes';
 
 import SignIn from '../pages/SignIn';
 import SignUp from '../pages/SignUp';
 
-const AuthStack = createNativeStackNavigator();
+const AuthStack = createNativeStackNavigator<AuthStackParamList>();
 
 function AuthRoutes(){
   return(
@@ -23,12 +24,10 @@ function AuthRoutes(){
         options={{
           headerStyle:{
             backgroundColor: '#3b3dbf',
-            borderBottomWidth: 1,
-            borderBottomColor: '#00b94a'
           },
+          headerShadowVisible: false,
           headerTintColor: '#FFF',
           headerTitle: 'Voltar',
-          headerBackTitleVisible: false,
         }}
       />
     </AuthStack.Navigator>

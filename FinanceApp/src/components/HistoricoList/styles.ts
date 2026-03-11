@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import type { MovementType } from '../../types/finance';
 
 export const Container = styled.View`
   background-color: #F0F3FF;
@@ -19,9 +20,13 @@ font-size: 16px;
 font-style: italic;
 `;
 
-export const IconView = styled.View`
+type IconViewProps = {
+  $type: MovementType;
+};
+
+export const IconView = styled.View<IconViewProps>`
   flex-direction: row;
-  background-color: ${props => props.tipo === 'despesa' ? '#c62c36' : '#049301'};
+  background-color: ${props => props.$type === 'despesa' ? '#c62c36' : '#049301'};
   padding-bottom: 4px;
   padding-top: 4px;
   padding-left: 8px;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { createDrawerNavigator, DrawerContentComponentProps } from '@react-navigation/drawer';
+import type { AppDrawerParamList } from './routeTypes';
 
 import Home from '../pages/Home';
 import New from '../pages/New';
@@ -7,7 +8,7 @@ import Profile from '../pages/Profile';
 
 import CustomDrawer from '../components/CustomDrawer';
 
-const AppDrawer = createDrawerNavigator();
+const AppDrawer = createDrawerNavigator<AppDrawerParamList>();
 
 // Componente de drawer extraído para evitar re-criação
 const DrawerContent = (props: DrawerContentComponentProps) => <CustomDrawer {...props} />;

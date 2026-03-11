@@ -1,6 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { Platform, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { AuthStackParamList } from '../../routes/routeTypes';
 
 import { 
   Background, 
@@ -15,7 +17,7 @@ import { AuthContext } from '../../contexts/auth';
 
 export default function SignUp(){
   const { signUp, loadingAuth } = useContext(AuthContext);
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList, 'SignUp'>>();
 
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
@@ -33,7 +35,7 @@ export default function SignUp(){
   return(
     <Background>
       <Container
-        behavior={Platform.OS === 'ios' ? 'padding' : ''}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         enabled
       >
 

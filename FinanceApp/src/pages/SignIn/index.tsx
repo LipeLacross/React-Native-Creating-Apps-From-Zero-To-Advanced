@@ -14,11 +14,13 @@ import {
 } from './styles';
 
 import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { AuthStackParamList } from '../../routes/routeTypes';
 
 import { AuthContext } from '../../contexts/auth'
 
 export default function SignIn(){
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<AuthStackParamList, 'SignIn'>>();
   const { signIn, loadingAuth } = useContext(AuthContext);
 
   const [email, setEmail] = useState('');
@@ -33,7 +35,7 @@ export default function SignIn(){
     <Background>
 
       <Container
-        behavior={Platform.OS === 'ios' ? 'padding' : ''}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         enabled
       >
         <Logo

@@ -3,6 +3,7 @@ import Icon from 'react-native-vector-icons/Feather';
 
 import { useNavigation } from '@react-navigation/native';
 import { DrawerNavigationProp } from '@react-navigation/drawer';
+import type { AppDrawerParamList } from '../../routes/routeTypes';
 
 import { Container, Title, ButtonMenu} from './styles';
 
@@ -11,7 +12,7 @@ type HeaderProps = {
 }
 
 export default function Header({ title }: HeaderProps){
-  const navigation = useNavigation<DrawerNavigationProp<any>>();
+  const navigation = useNavigation<DrawerNavigationProp<AppDrawerParamList>>();
 
   return(
     <Container>

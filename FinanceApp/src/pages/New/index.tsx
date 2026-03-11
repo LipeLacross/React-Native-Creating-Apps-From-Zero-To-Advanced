@@ -9,13 +9,16 @@ import RegisterTypes from '../../components/RegisterTypes';
 import api from '../../services/api';
 import { format } from 'date-fns';
 import { useNavigation } from '@react-navigation/native';
+import type { DrawerNavigationProp } from '@react-navigation/drawer';
+import type { MovementType } from '../../types/finance';
+import type { AppDrawerParamList } from '../../routes/routeTypes';
 
 export default function New(){
-  const navigation = useNavigation();
+  const navigation = useNavigation<DrawerNavigationProp<AppDrawerParamList, 'Registrar'>>();
 
   const [labelInput, setLabelInput] = useState('');
   const [valueInput, setValueInput] = useState('');
-  const [type, setType] = useState('receita');
+  const [type, setType] = useState<MovementType>('receita');
 
   function handleSubmit(){
     Keyboard.dismiss();

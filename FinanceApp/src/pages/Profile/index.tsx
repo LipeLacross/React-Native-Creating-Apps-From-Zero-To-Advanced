@@ -14,10 +14,12 @@ import Header from '../../components/Header';
 import { AuthContext } from '../../contexts/auth';
 
 import { useNavigation } from '@react-navigation/native'
+import type { DrawerNavigationProp } from '@react-navigation/drawer';
+import type { AppDrawerParamList } from '../../routes/routeTypes';
 
 export default function Profile(){
   const { user, signOut } = useContext(AuthContext);
-  const navigation = useNavigation();
+  const navigation = useNavigation<DrawerNavigationProp<AppDrawerParamList, 'Perfil'>>();
 
   return(
     <Container>

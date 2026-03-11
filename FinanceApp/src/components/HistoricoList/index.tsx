@@ -9,14 +9,7 @@ import {
 import { TouchableWithoutFeedback, Alert} from 'react-native';
 
 import Icon from 'react-native-vector-icons/Feather';
-
-type MovementData = {
-  id: string;
-  type: string;
-  value: string;
-  description?: string;
-  date?: string;
-}
+import type { MovementData } from '../../types/finance';
 
 type HistoricoListProps = {
   data: MovementData;
@@ -46,8 +39,8 @@ export default function HistoricoList({ data, deleteItem }: HistoricoListProps){
     <TouchableWithoutFeedback onLongPress={handleDeleteItem}>
       <Container>
         <Tipo>
-          <IconView tipo={data.type}>
-            <Icon 
+          <IconView $type={data.type}>
+            <Icon
               name={data.type === 'despesa' ? 'arrow-down' : 'arrow-up'}
               size={20} 
               color="#FFF" 

@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity, Modal, StyleSheet } from 'react-native';
+import { TouchableOpacity, Modal, StyleSheet, FlatList, type FlatListProps } from 'react-native';
 
 import Header from '../../components/Header';
 import { 
-  Background, 
-  ListBalance,
+  Background,
   Area,
   Title,
-  List
- } from './styles'; 
+ } from './styles';
 
 import api from '../../services/api'
 import { format } from 'date-fns';
@@ -19,18 +17,14 @@ import HistoricoList from '../../components/HistoricoList';
 import CalendarModal from '../../components/CalendarModal'
 
 import Icon from 'react-native-vector-icons/MaterialIcons'
+import type { BalanceData, MovementData } from '../../types/finance';
 
-type BalanceData = {
-  tag: string;
-  saldo: string;
+function BalanceFlatList(props: FlatListProps<BalanceData>) {
+  return <FlatList {...props} />;
 }
 
-type MovementData = {
-  id: string;
-  type: string;
-  value: string;
-  description?: string;
-  date?: string;
+function MovementFlatList(props: FlatListProps<MovementData>) {
+  return <FlatList {...props} />;
 }
 
 export default function Home(){
@@ -102,12 +96,13 @@ export default function Home(){
     <Background>
       <Header title="Minhas movimentações" />
 
-      <ListBalance
+      <BalanceFlatList
         data={listBalance}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        keyExtractor={ (item: BalanceData) => item.tag }
-        renderItem={ ({ item }: { item: BalanceData }) => ( <BalanceItem data={item} /> )}
+        keyExtractor={(item: BalanceData) => item.tag}
+        renderItem={({ item }: { item: BalanceData }) => <BalanceItem data={item} />}
+        style={styles.balanceList}
       />
 
       <Area>
@@ -117,12 +112,13 @@ export default function Home(){
         <Title>Ultimas movimentações</Title>
       </Area>
 
-      <List
+      <MovementFlatList
         data={movements}
-        keyExtractor={ (item: MovementData) => item.id }
-        renderItem={ ({ item }: { item: MovementData }) => <HistoricoList data={item} deleteItem={handleDelete} />  }
+        keyExtractor={(item: MovementData) => item.id}
+        renderItem={({ item }: { item: MovementData }) => <HistoricoList data={item} deleteItem={handleDelete} />}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
+        style={styles.movementList}
       />
 
       <Modal visible={modalVisible} animationType="fade" transparent={true}>
@@ -138,8 +134,14 @@ export default function Home(){
 }
 
 const styles = StyleSheet.create({
+  balanceList: {
+    maxHeight: 190,
+  },
+  movementList: {
+    flex: 1,
+    backgroundColor: '#FFF',
+  },
   listContent: {
     paddingBottom: 20
   }
 });
-

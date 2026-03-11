@@ -1,10 +1,6 @@
 import React, { useMemo } from 'react';
 import { Container, Label, Balance } from './styles';
-
-type BalanceData = {
-  tag: string;
-  saldo: string;
-}
+import type { BalanceData } from '../../types/finance';
 
 type BalanceItemProps = {
   data: BalanceData;
@@ -33,7 +29,7 @@ export default function BalanceItem({ data }: BalanceItemProps){
   }, [data])
 
   return(
-    <Container bg={labelName.color}>
+    <Container $bg={labelName.color}>
       <Label>{labelName.label}</Label>
       <Balance>R$ {data.saldo}</Balance>
     </Container>

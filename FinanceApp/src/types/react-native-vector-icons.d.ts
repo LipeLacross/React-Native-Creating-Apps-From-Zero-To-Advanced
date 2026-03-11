@@ -11,4 +11,3 @@ declare module 'react-native-vector-icons/MaterialIcons' {
   const MaterialIcons: ComponentType<any>;
   export default MaterialIcons;
 }
-

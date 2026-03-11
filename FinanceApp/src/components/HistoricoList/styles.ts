@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 import type { MovementType } from '../../types/finance';
 
 export const Container = styled.View`
-  background-color: #F0F3FF;
+  background-color: #f0f3ff;
   border-radius: 4px;
   margin-left: 10px;
   margin-right: 10px;
@@ -15,9 +15,9 @@ export const Tipo = styled.View`
 `;
 
 export const TipoText = styled.Text`
-color: #FFF;
-font-size: 16px;
-font-style: italic;
+  color: #fff;
+  font-size: 16px;
+  font-style: italic;
 `;
 
 type IconViewProps = {
@@ -26,7 +26,8 @@ type IconViewProps = {
 
 export const IconView = styled.View<IconViewProps>`
   flex-direction: row;
-  background-color: ${props => props.$type === 'despesa' ? '#c62c36' : '#049301'};
+  background-color: ${props =>
+    props.$type === 'despesa' ? '#c62c36' : '#049301'};
   padding-bottom: 4px;
   padding-top: 4px;
   padding-left: 8px;

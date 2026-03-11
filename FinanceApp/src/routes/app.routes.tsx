@@ -1,5 +1,8 @@
 import React from 'react';
-import { createDrawerNavigator, DrawerContentComponentProps } from '@react-navigation/drawer';
+import {
+  createDrawerNavigator,
+  DrawerContentComponentProps,
+} from '@react-navigation/drawer';
 import type { AppDrawerParamList } from './routeTypes';
 
 import Home from '../pages/Home';
@@ -11,44 +14,36 @@ import CustomDrawer from '../components/CustomDrawer';
 const AppDrawer = createDrawerNavigator<AppDrawerParamList>();
 
 // Componente de drawer extraído para evitar re-criação
-const DrawerContent = (props: DrawerContentComponentProps) => <CustomDrawer {...props} />;
+const DrawerContent = (props: DrawerContentComponentProps) => (
+  <CustomDrawer {...props} />
+);
 
-function AppRoutes(){
-  return(
+function AppRoutes() {
+  return (
     <AppDrawer.Navigator
       drawerContent={DrawerContent}
       screenOptions={{
-        headerShown:false,
+        headerShown: false,
 
-        drawerStyle:{
+        drawerStyle: {
           backgroundColor: '#FFF',
           paddingTop: 20,
         },
 
-        drawerActiveBackgroundColor:'#3b3dbf',
+        drawerActiveBackgroundColor: '#3b3dbf',
         drawerActiveTintColor: '#FFF',
 
         drawerInactiveBackgroundColor: '#F0F2FF',
-        drawerInactiveTintColor: '#121212'
-
+        drawerInactiveTintColor: '#121212',
       }}
     >
-      <AppDrawer.Screen
-        name="Home"
-        component={Home}
-      />
+      <AppDrawer.Screen name="Home" component={Home} />
 
-      <AppDrawer.Screen
-        name="Registrar"
-        component={New}
-      />
+      <AppDrawer.Screen name="Registrar" component={New} />
 
-      <AppDrawer.Screen
-        name="Perfil"
-        component={Profile}
-      />
+      <AppDrawer.Screen name="Perfil" component={Profile} />
     </AppDrawer.Navigator>
-  )
+  );
 }
 
 export default AppRoutes;

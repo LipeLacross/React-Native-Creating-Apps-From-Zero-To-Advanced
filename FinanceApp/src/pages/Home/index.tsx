@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { TouchableOpacity, Modal, StyleSheet, FlatList, type FlatListProps } from 'react-native';
+import {
+  TouchableOpacity,
+  Modal,
+  StyleSheet,
+  FlatList,
+  type FlatListProps,
+} from 'react-native';
 
 import Header from '../../components/Header';
-import { 
-  Background,
-  Area,
-  Title,
- } from './styles';
+import { Background, Area, Title } from './styles';
 
-import api from '../../services/api'
+import api from '../../services/api';
 import { format } from 'date-fns';
 
 import { useIsFocused } from '@react-navigation/native';
 import BalanceItem from '../../components/BalanceItem';
 import HistoricoList from '../../components/HistoricoList';
-import CalendarModal from '../../components/CalendarModal'
+import CalendarModal from '../../components/CalendarModal';
 
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import type { BalanceData, MovementData } from '../../types/finance';
 
 function BalanceFlatList(props: FlatListProps<BalanceData>) {
@@ -27,38 +29,36 @@ function MovementFlatList(props: FlatListProps<MovementData>) {
   return <FlatList {...props} />;
 }
 
-export default function Home(){
+export default function Home() {
   const isFocused = useIsFocused();
   const [listBalance, setListBalance] = useState<BalanceData[]>([]);
   const [movements, setMovements] = useState<MovementData[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const [dateMovements, setDateMovements] = useState(new Date())
+  const [dateMovements, setDateMovements] = useState(new Date());
 
-
-  useEffect(()=>{
+  useEffect(() => {
     let isActive = true;
 
-    async function getMovements(){
-
-      let date = new Date(dateMovements)
+    async function getMovements() {
+      let date = new Date(dateMovements);
       let onlyDate = date.valueOf() + date.getTimezoneOffset() * 60 * 1000;
       let dateFormated = format(onlyDate, 'dd/MM/yyyy');
 
       const receives = await api.get('/receives', {
-        params:{
-          date: dateFormated
-        }
-      })
+        params: {
+          date: dateFormated,
+        },
+      });
 
       const balance = await api.get('/balance', {
-        params:{
-          date: dateFormated 
-        }
-      })
+        params: {
+          date: dateFormated,
+        },
+      });
 
-      if(isActive){
-        setMovements(receives.data)
+      if (isActive) {
+        setMovements(receives.data);
         setListBalance(balance.data);
       }
     }
@@ -68,31 +68,28 @@ export default function Home(){
     return () => {
       isActive = false;
     };
+  }, [isFocused, dateMovements]);
 
-  }, [isFocused, dateMovements])
-
-
-  async function handleDelete(id: string){
-    try{
+  async function handleDelete(id: string) {
+    try {
       await api.delete('/receives/delete', {
-        params:{
-          item_id: id
-        }
-      })
+        params: {
+          item_id: id,
+        },
+      });
 
-      setDateMovements(new Date())
-    }catch(err){
+      setDateMovements(new Date());
+    } catch (err) {
       console.log(err);
     }
   }
 
-  function filterDateMovements(dateSelected: Date){
+  function filterDateMovements(dateSelected: Date) {
     // console.log(dateSelected);
     setDateMovements(dateSelected);
   }
 
-
-  return(
+  return (
     <Background>
       <Header title="Minhas movimentações" />
 
@@ -101,12 +98,14 @@ export default function Home(){
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item: BalanceData) => item.tag}
-        renderItem={({ item }: { item: BalanceData }) => <BalanceItem data={item} />}
+        renderItem={({ item }: { item: BalanceData }) => (
+          <BalanceItem data={item} />
+        )}
         style={styles.balanceList}
       />
 
       <Area>
-        <TouchableOpacity onPress={ () => setModalVisible(true) }>
+        <TouchableOpacity onPress={() => setModalVisible(true)}>
           <Icon name="event" color="#121212" size={30} />
         </TouchableOpacity>
         <Title>Ultimas movimentações</Title>
@@ -115,7 +114,9 @@ export default function Home(){
       <MovementFlatList
         data={movements}
         keyExtractor={(item: MovementData) => item.id}
-        renderItem={({ item }: { item: MovementData }) => <HistoricoList data={item} deleteItem={handleDelete} />}
+        renderItem={({ item }: { item: MovementData }) => (
+          <HistoricoList data={item} deleteItem={handleDelete} />
+        )}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
         style={styles.movementList}
@@ -123,14 +124,12 @@ export default function Home(){
 
       <Modal visible={modalVisible} animationType="fade" transparent={true}>
         <CalendarModal
-          setVisible={ () => setModalVisible(false) }
+          setVisible={() => setModalVisible(false)}
           handleFilter={filterDateMovements}
         />
       </Modal>
-
-
     </Background>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -142,6 +141,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
   },
   listContent: {
-    paddingBottom: 20
-  }
+    paddingBottom: 20,
+  },
 });

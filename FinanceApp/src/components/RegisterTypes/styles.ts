@@ -14,15 +14,15 @@ type RegisterTypeButtonProps = {
 };
 
 export const RegisterTypeButton = styled.TouchableOpacity<RegisterTypeButtonProps>`
-  background-color: ${props => props.$checked ? '#FFF' : '#e7e7e7'};
+  background-color: ${props => (props.$checked ? '#FFF' : '#e7e7e7')};
   width: 47%;
   justify-content: center;
-  align-items:center;
+  align-items: center;
   flex-direction: row;
   height: 45px;
   border-radius: 4px;
   border-width: 1.5px;
-  border-color: ${props => props.$checked ? '#3b3dbf' : 'transparent'};
+  border-color: ${props => (props.$checked ? '#3b3dbf' : 'transparent')};
   margin-bottom: 14px;
 `;
 

@@ -7,43 +7,41 @@ import { RegisterContainer, RegisterTypeButton, RegisterLabel } from './styles';
 type RegisterTypesProps = {
   type: MovementType;
   sendTypeChanged: (type: MovementType) => void;
-}
+};
 
-export default function RegisterTypes({ type, sendTypeChanged }: RegisterTypesProps){
-  const [typeChecked, setTypeChecked] = useState<MovementType>(type)
+export default function RegisterTypes({
+  type,
+  sendTypeChanged,
+}: RegisterTypesProps) {
+  const [typeChecked, setTypeChecked] = useState<MovementType>(type);
 
-  function changeType(name: MovementType){
-    if(name === 'receita'){
+  function changeType(name: MovementType) {
+    if (name === 'receita') {
       setTypeChecked('receita');
       sendTypeChanged('receita');
-    }else{
+    } else {
       setTypeChecked('despesa');
       sendTypeChanged('despesa');
     }
   }
 
-  return(
+  return (
     <RegisterContainer>
-      <RegisterTypeButton 
+      <RegisterTypeButton
         $checked={typeChecked === 'receita'}
-        onPress={ () => changeType('receita') }
+        onPress={() => changeType('receita')}
       >
-        <Feather name="arrow-up" size={25} color="#121212"/>
-        <RegisterLabel>
-          Receita
-        </RegisterLabel>
+        <Feather name="arrow-up" size={25} color="#121212" />
+        <RegisterLabel>Receita</RegisterLabel>
       </RegisterTypeButton>
 
-      <RegisterTypeButton 
+      <RegisterTypeButton
         $checked={typeChecked === 'despesa'}
-        onPress={ () => changeType('despesa') }
+        onPress={() => changeType('despesa')}
       >
-        <Feather name="arrow-down" size={25} color="#121212"/>
-        <RegisterLabel>
-          Despesa
-        </RegisterLabel>
+        <Feather name="arrow-down" size={25} color="#121212" />
+        <RegisterLabel>Despesa</RegisterLabel>
       </RegisterTypeButton>
-
     </RegisterContainer>
-  )
+  );
 }

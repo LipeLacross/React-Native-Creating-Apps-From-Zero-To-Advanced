@@ -8,4 +8,3 @@ export type AppDrawerParamList = {
   Registrar: undefined;
   Perfil: undefined;
 };
-

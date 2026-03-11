@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 
 export const Container = styled.SafeAreaView`
   flex: 1;
-  background-color: #F0F4FF;
+  background-color: #f0f4ff;
   align-items: center;
 `;
 
@@ -33,7 +33,7 @@ export const NewLink = styled.TouchableOpacity`
 export const NewText = styled.Text`
   font-size: 18px;
   font-weight: bold;
-  color: #FFF;
+  color: #fff;
 `;
 
 export const LogoutButton = styled.TouchableOpacity`

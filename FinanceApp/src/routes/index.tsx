@@ -1,25 +1,23 @@
 import React, { useContext } from 'react';
 import { View, ActivityIndicator, StyleSheet } from 'react-native';
 
-import { AuthContext } from '../contexts/auth'
+import { AuthContext } from '../contexts/auth';
 
 import AuthRoutes from './auth.routes';
 import AppRoutes from './app.routes';
 
-function Routes(){
+function Routes() {
   const { signed, loading } = useContext(AuthContext);
 
-  if(loading){
-    return(
+  if (loading) {
+    return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#131313" />
       </View>
-    )
+    );
   }
 
-  return(
-    signed ? <AppRoutes/> : <AuthRoutes/>
-  )
+  return signed ? <AppRoutes /> : <AuthRoutes />;
 }
 
 const styles = StyleSheet.create({
@@ -27,8 +25,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F0F4FF'
-  }
+    backgroundColor: '#F0F4FF',
+  },
 });
 
 export default Routes;

@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
 
 import { Background, Input, SubmitButton, SubmitText } from './styles';
-import { SafeAreaView, TouchableWithoutFeedback, Keyboard, Alert, StyleSheet } from 'react-native';
+import {
+  SafeAreaView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Alert,
+  StyleSheet,
+} from 'react-native';
 
-import Header from '../../components/Header'
+import Header from '../../components/Header';
 import RegisterTypes from '../../components/RegisterTypes';
 
 import api from '../../services/api';
@@ -13,18 +19,19 @@ import type { DrawerNavigationProp } from '@react-navigation/drawer';
 import type { MovementType } from '../../types/finance';
 import type { AppDrawerParamList } from '../../routes/routeTypes';
 
-export default function New(){
-  const navigation = useNavigation<DrawerNavigationProp<AppDrawerParamList, 'Registrar'>>();
+export default function New() {
+  const navigation =
+    useNavigation<DrawerNavigationProp<AppDrawerParamList, 'Registrar'>>();
 
   const [labelInput, setLabelInput] = useState('');
   const [valueInput, setValueInput] = useState('');
   const [type, setType] = useState<MovementType>('receita');
 
-  function handleSubmit(){
+  function handleSubmit() {
     Keyboard.dismiss();
 
-    if(isNaN(parseFloat(valueInput)) || type === null){
-      Alert.alert('Atenção', 'Preencha todos os campos')
+    if (isNaN(parseFloat(valueInput)) || type === null) {
+      Alert.alert('Atenção', 'Preencha todos os campos');
       return;
     }
 
@@ -34,35 +41,33 @@ export default function New(){
       [
         {
           text: 'Cancelar',
-          style: 'cancel'
+          style: 'cancel',
         },
         {
           text: 'Continuar',
-          onPress: () => handleAdd() 
-        }
-      ]
-    )
-
+          onPress: () => handleAdd(),
+        },
+      ],
+    );
   }
 
-
-  async function handleAdd(){
+  async function handleAdd() {
     Keyboard.dismiss();
 
     await api.post('/receive', {
       description: labelInput,
       value: Number(valueInput),
       type: type,
-      date: format(new Date(), 'dd/MM/yyyy')
-    })
+      date: format(new Date(), 'dd/MM/yyyy'),
+    });
 
     setLabelInput('');
     setValueInput('');
-    navigation.navigate('Home')
+    navigation.navigate('Home');
   }
 
-  return(
-    <TouchableWithoutFeedback onPress={ () => Keyboard.dismiss() } >
+  return (
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <Background>
         <Header title="Registrando" />
 
@@ -70,31 +75,30 @@ export default function New(){
           <Input
             placeholder="Descrição desse registro"
             value={labelInput}
-            onChangeText={ (text) => setLabelInput(text) }
+            onChangeText={text => setLabelInput(text)}
           />
 
           <Input
             placeholder="Valor desejado"
             keyboardType="numeric"
             value={valueInput}
-            onChangeText={ (text) => setValueInput(text) }
+            onChangeText={text => setValueInput(text)}
           />
 
-          <RegisterTypes type={type} sendTypeChanged={ (item) => setType(item) } />
+          <RegisterTypes type={type} sendTypeChanged={item => setType(item)} />
 
           <SubmitButton onPress={handleSubmit}>
             <SubmitText>Registrar</SubmitText>
           </SubmitButton>
-
         </SafeAreaView>
       </Background>
     </TouchableWithoutFeedback>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     marginTop: 14,
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 });

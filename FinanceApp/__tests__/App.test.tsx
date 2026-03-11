@@ -6,12 +6,13 @@ import React from 'react';
 import ReactTestRenderer from 'react-test-renderer';
 
 jest.mock('@react-navigation/native', () => ({
-  NavigationContainer: ({children}: {children: React.ReactNode}) => children,
+  NavigationContainer: ({ children }: { children: React.ReactNode }) =>
+    children,
 }));
 
 jest.mock('../src/contexts/auth', () => ({
   __esModule: true,
-  default: ({children}: {children: React.ReactNode}) => children,
+  default: ({ children }: { children: React.ReactNode }) => children,
 }));
 
 jest.mock('../src/routes', () => {

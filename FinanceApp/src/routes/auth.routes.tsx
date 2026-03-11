@@ -7,10 +7,10 @@ import SignUp from '../pages/SignUp';
 
 const AuthStack = createNativeStackNavigator<AuthStackParamList>();
 
-function AuthRoutes(){
-  return(
+function AuthRoutes() {
+  return (
     <AuthStack.Navigator>
-      <AuthStack.Screen 
+      <AuthStack.Screen
         name="SignIn"
         component={SignIn}
         options={{
@@ -22,7 +22,7 @@ function AuthRoutes(){
         name="SignUp"
         component={SignUp}
         options={{
-          headerStyle:{
+          headerStyle: {
             backgroundColor: '#3b3dbf',
           },
           headerShadowVisible: false,
@@ -31,7 +31,7 @@ function AuthRoutes(){
         }}
       />
     </AuthStack.Navigator>
-  )
+  );
 }
 
 export default AuthRoutes;

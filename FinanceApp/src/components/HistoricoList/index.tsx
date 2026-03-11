@@ -1,12 +1,6 @@
 import React from 'react';
-import {
-  Container, 
-  TipoText,
-  Tipo,
-  IconView,
-  ValorText
-} from './styles';
-import { TouchableWithoutFeedback, Alert} from 'react-native';
+import { Container, TipoText, Tipo, IconView, ValorText } from './styles';
+import { TouchableWithoutFeedback, Alert } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Feather';
 import type { MovementData } from '../../types/finance';
@@ -14,45 +8,45 @@ import type { MovementData } from '../../types/finance';
 type HistoricoListProps = {
   data: MovementData;
   deleteItem: (id: string) => void;
-}
+};
 
-export default function HistoricoList({ data, deleteItem }: HistoricoListProps){
-
-  function handleDeleteItem(){
+export default function HistoricoList({
+  data,
+  deleteItem,
+}: HistoricoListProps) {
+  function handleDeleteItem() {
     Alert.alert(
       'Atenção',
       'Você tem certeza que deseja deletar esse registro?',
       [
         {
-          text:'Cancelar',
+          text: 'Cancelar',
           style: 'cancel',
         },
         {
           text: 'Continuar',
-          onPress: () => deleteItem(data.id)
-        }
-      ]
-    )
+          onPress: () => deleteItem(data.id),
+        },
+      ],
+    );
   }
 
-  return(
+  return (
     <TouchableWithoutFeedback onLongPress={handleDeleteItem}>
       <Container>
         <Tipo>
           <IconView $type={data.type}>
             <Icon
               name={data.type === 'despesa' ? 'arrow-down' : 'arrow-up'}
-              size={20} 
-              color="#FFF" 
+              size={20}
+              color="#FFF"
             />
             <TipoText>{data.type}</TipoText>
           </IconView>
         </Tipo>
 
-        <ValorText>
-          R$ {data.value}
-        </ValorText>
+        <ValorText>R$ {data.value}</ValorText>
       </Container>
     </TouchableWithoutFeedback>
-  )
+  );
 }

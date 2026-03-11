@@ -1,14 +1,18 @@
-import React, { useContext } from 'react'
+import React, { useContext } from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 
-import { DrawerItemList, DrawerContentScrollView, DrawerContentComponentProps } from '@react-navigation/drawer';
+import {
+  DrawerItemList,
+  DrawerContentScrollView,
+  DrawerContentComponentProps,
+} from '@react-navigation/drawer';
 
 import { AuthContext } from '../../contexts/auth';
 
-export default function CustomDrawer(props: DrawerContentComponentProps){
+export default function CustomDrawer(props: DrawerContentComponentProps) {
   const { user } = useContext(AuthContext);
 
-  return(
+  return (
     <DrawerContentScrollView {...props}>
       <View style={styles.headerContainer}>
         <Image
@@ -17,14 +21,9 @@ export default function CustomDrawer(props: DrawerContentComponentProps){
           resizeMode="contain"
         />
 
-        <Text style={styles.welcomeText}>
-          Bem-vindo
-        </Text>
+        <Text style={styles.welcomeText}>Bem-vindo</Text>
 
-        <Text 
-        style={styles.userName}
-        numberOfLines={1}
-        >
+        <Text style={styles.userName} numberOfLines={1}>
           {user && user.name}
         </Text>
       </View>
@@ -37,27 +36,27 @@ export default function CustomDrawer(props: DrawerContentComponentProps){
         onPress={ () => signOut() }
       /> */}
     </DrawerContentScrollView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   headerContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 25
+    marginTop: 25,
   },
   logo: {
     width: 90,
-    height: 90
+    height: 90,
   },
   welcomeText: {
     fontSize: 18,
-    marginTop: 14
+    marginTop: 14,
   },
   userName: {
     fontSize: 17,
     fontWeight: 'bold',
     marginBottom: 14,
-    paddingHorizontal: 20
-  }
+    paddingHorizontal: 20,
+  },
 });
